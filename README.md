@@ -1,6 +1,6 @@
 # Beatfy
 
-Offline music player for Android. Plays MP3 files already on your device —
+Offline music player for Android. Plays MP3 files already on your device
 no streaming, no ads, no third-party analytics. Built with Flutter.
 
 ## Privacy
@@ -8,7 +8,7 @@ no streaming, no ads, no third-party analytics. Built with Flutter.
 Beatfy does not collect any user data, and has no ads or third-party
 analytics. The only data that ever leaves your device is the music files
 backed up to **your own** Google Drive account, and only if you turn the
-backup feature on — Beatfy has no server of its own that stores anything.
+backup feature on Beatfy has no server of its own that stores anything.
 
 Google Sign-In is used solely to authorize that Drive backup and is entirely
 optional; every core feature (offline playback) works fully without signing
@@ -22,7 +22,7 @@ does rather than take this description on faith.
 ### "Google hasn't verified this app"
 
 If you sign in with Google, you may see a warning that Google hasn't
-verified this app. That's expected and not a sign of malware — it's simply
+verified this app. That's expected and not a sign of malware it's simply
 what Google shows for any personal/open-source app that hasn't gone through
 their (paid, business-oriented) verification process. Click through to
 continue if you trust the source you downloaded the APK from (see below).
@@ -31,7 +31,7 @@ continue if you trust the source you downloaded the APK from (see below).
 
 Grab the APK from the [Releases](../../releases) page. Since this isn't
 published on the Play Store, Android will warn about installing from an
-unknown source — that's normal for sideloaded APKs.
+unknown source that's normal for sideloaded APKs.
 
 To verify the APK you downloaded matches the official release and hasn't
 been tampered with, compare its SHA-256 signing fingerprint against the one
@@ -64,7 +64,7 @@ must not be distributed until real signing is configured). To set one up:
    ```
 
    Place the resulting `beatfy-release.jks` **outside** of version control
-   (e.g. `android/beatfy-release.jks` — already covered by
+   (e.g. `android/beatfy-release.jks` already covered by
    `android/.gitignore`'s `**/*.jks` rule).
 
 2. Copy `android/key.properties.example` to `android/key.properties` and
