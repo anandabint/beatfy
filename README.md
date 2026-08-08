@@ -13,7 +13,7 @@ backup feature on Beatfy has no server of its own that stores anything.
 Google Sign-In is used solely to authorize that Drive backup and is entirely
 optional; every core feature (offline playback) works fully without signing
 in. The Drive access requested is the `drive.file` scope, which only grants
-access to files Beatfy itself creates in your Drive — never your full Drive
+access to files Beatfy itself creates in your Drive never your full Drive
 contents.
 
 Beatfy is open source, so you (or anyone) can read exactly what the code
