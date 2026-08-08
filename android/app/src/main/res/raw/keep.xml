@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fix: audio_service's built-in MediaControl notification icons
+  (audio_service_pause/play_arrow/skip_next/skip_previous/stop) are resolved
+  at runtime via Resources.getIdentifier() inside the plugin's native Android
+  code (AudioService.java), not a static R.drawable.* reference. The release
+  resource shrinker can't see that usage, so it strips them as "unreachable" —
+  the notification's action PendingIntents still get created, but with an
+  invalid icon (id 0), which is enough for some OEM-customized notification
+  shades (confirmed: ColorOS/Realme) to silently drop the entire transport
+  controls row instead of just the broken icon.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/audio_service_pause,@drawable/audio_service_play_arrow,@drawable/audio_service_skip_next,@drawable/audio_service_skip_previous,@drawable/audio_service_stop,@drawable/audio_service_fast_forward,@drawable/audio_service_fast_rewind" />
