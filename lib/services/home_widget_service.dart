@@ -6,11 +6,11 @@ import 'package:home_widget/home_widget.dart';
 import '../playback/audio_handler.dart';
 
 /// Pushes data to the Android home screen widget (docs/prompt_home_widget.md
-/// Langkah 3). Pure listener, zero playback logic of its own — subscribes to
+/// Langkah 3). Pure listener, zero playback logic of its own; subscribes to
 /// the exact same `AudioHandler` streams the Flutter UI providers already
 /// watch (`playback_providers.dart`), never a second/polling data source
 /// (Architecture.md § 2 prinsip 2). Button taps on the widget never come
-/// back through this class — they go straight from the native
+/// back through this class; they go straight from the native
 /// `BeatfyHomeWidgetProvider` to `MediaButtonReceiver`, same path as the
 /// notification's own controls.
 class HomeWidgetService {
@@ -36,7 +36,7 @@ class HomeWidgetService {
     });
 
     // `playbackState` re-emits on every position tick, not just play/pause
-    // toggles — only push when `playing` actually flips, otherwise this
+    // toggles; only push when `playing` actually flips, otherwise this
     // would hammer the widget with redundant updates several times a second.
     _playbackStateSub = _audioHandler.playbackState.listen((state) {
       if (state.playing == _lastPlaying) return;

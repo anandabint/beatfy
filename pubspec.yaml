@@ -89,10 +89,10 @@ dependencies:
   # Playing dari dominant color artwork.
   palette_generator: ^0.3.3
 
-  # Home screen widget (docs/prompt_home_widget.md) — jembatan Flutter ke
+  # Home screen widget (docs/prompt_home_widget.md); jembatan Flutter ke
   # App Widget native (RemoteViews/AppWidgetProvider Kotlin). Cuma dipakai
   # untuk push data (title/artist/artwork/playing) + trigger redraw; tombol
-  # prev/play-pause/next widget TIDAK lewat callback Dart home_widget —
+  # prev/play-pause/next widget TIDAK lewat callback Dart home_widget;
   # langsung native PendingIntent ke
   # `com.ryanheise.audioservice.MediaButtonReceiver` yang sudah ada, sama
   # persis jalur yang dipakai notification media control (lihat

@@ -12,15 +12,15 @@ import '../../widgets/common/add_to_playlist_sheet.dart';
 import '../../widgets/common/song_actions_sheet.dart';
 import '../../widgets/common/song_row.dart';
 
-/// Detail satu grup Album/Artist/Folder — generic, dipakai untuk ketiganya
+/// Detail satu grup Album/Artist/Folder; generic, dipakai untuk ketiganya
 /// (PRD.md § 7 poin 6: strukturnya identik, cukup 1 screen reusable).
 /// Reuse [SongRow] + [showSongActionsSheet] persis seperti Library flat list.
 ///
 /// **Mode pilih-banyak (ditambahkan sesi ini)**: tap ikon "Pilih lagu" di
-/// AppBar buat masuk mode select — tap row buat toggle centang (bukan play),
+/// AppBar buat masuk mode select; tap row buat toggle centang (bukan play),
 /// ikon "Pilih Semua"/"Batalkan semua" di AppBar, lalu tombol "Tambah ke
 /// Playlist (N)" di bawah buat nambahin semua lagu terpilih sekaligus lewat
-/// [showAddSongsToPlaylistSheet] — supaya tidak perlu buka context menu
+/// [showAddSongsToPlaylistSheet]; supaya tidak perlu buka context menu
 /// satu-satu per lagu tiap mau nambah banyak lagu dari satu folder/album ke
 /// playlist. Long-press (context menu single-song, `showSongActionsSheet`)
 /// tetap berlaku seperti biasa di luar mode select.
@@ -120,7 +120,7 @@ class _GroupDetailScreenState extends ConsumerState<GroupDetailScreen> {
         padding: EdgeInsets.only(
           bottom: _selecting ? AppSpacing.xxxl * 2 : AppSpacing.xxxl,
         ),
-        // Semua row seragam tinggi — skip layout pass per-item saat scroll
+        // Semua row seragam tinggi; skip layout pass per-item saat scroll
         // (audit performa PRD.md § 11, 2026-08-07).
         prototypeItem: SongRow(song: songs.first, onTap: () {}),
         itemCount: songs.length,

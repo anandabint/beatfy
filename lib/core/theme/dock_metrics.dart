@@ -1,4 +1,4 @@
-/// Fallback tinggi dock (`MiniPlayer` + pill bottom nav) — Design.md § 7.
+/// Fallback tinggi dock (`MiniPlayer` + pill bottom nav); Design.md § 7.
 /// **Bukan** dipakai sebagai padding final list mana pun  itu sumber bug
 /// "baris terakhir list ketutup dock" yang berulang balik lagi di beberapa
 /// sesi (Architecture.md § 3a/§ 7e): device beda punya safe-area beda,

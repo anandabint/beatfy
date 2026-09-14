@@ -9,9 +9,8 @@ import 'package:http/http.dart' as http;
 /// Console. Project ini tidak pakai Firebase/`google-services.json`, jadi
 /// `serverClientId` harus di-supply manual saat `GoogleSignIn.initialize()`
 /// (lihat README `google_sign_in_android`). Ini client ID publik, bukan
-/// client secret  aman ditulis di source, tapi tetap butuh dibuat dulu di
-/// Cloud Console (langkah manual, di luar kendali Claude Code, dijelaskan
-/// terpisah ke Pann).
+/// client secret, aman ditulis di source, tapi tetap butuh dibuat dulu di
+/// Cloud Console (langkah manual, di luar kode, lihat dokumentasi setup).
 const _googleServerClientId =
     '825315718744-de5b086fshmdm3clgfjnn1do9tar8isv.apps.googleusercontent.com'; // TODO(Pann): isi dari Google Cloud Console
 

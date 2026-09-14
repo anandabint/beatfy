@@ -17,7 +17,7 @@ import '../../widgets/common/song_row.dart';
 
 final _searchQueryProvider = StateProvider<String>((ref) => '');
 
-/// Filter title/artis/album real-time dari `librarySongsProvider` — cari
+/// Filter title/artis/album real-time dari `librarySongsProvider`; cari
 /// murni di memori, tidak query MediaStore/Hive ulang tiap ketikan
 /// (PRD.md § 7 poin 3).
 final _searchResultsProvider = Provider<AsyncValue<List<Song>>>((ref) {
@@ -34,7 +34,7 @@ final _searchResultsProvider = Provider<AsyncValue<List<Song>>>((ref) {
   });
 });
 
-/// Search tab — cari across judul/artis/album (PRD.md § 7 poin 3).
+/// Search tab; cari across judul/artis/album (PRD.md § 7 poin 3).
 class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
 
@@ -44,11 +44,11 @@ class SearchScreen extends ConsumerWidget {
     final resultsAsync = ref.watch(_searchResultsProvider);
     final currentSongId = ref.watch(currentMediaItemProvider).value?.id;
     // Bottom padding di bawah biasanya dicadangkan buat bottom-nav/mini-
-    // player supaya konten tidak ketutup nav pill — dipakai dari tinggi dock
+    // player supaya konten tidak ketutup nav pill; dipakai dari tinggi dock
     // hasil pengukuran layout nyata (`dockHeightProvider`, sama pola dengan
-    // Home/Library, bukan konstanta ditebak — screen ini juga dipakai
+    // Home/Library, bukan konstanta ditebak; screen ini juga dipakai
     // sebagai tab `MainShell.extendBody: true`, Architecture.md § 3a/§ 7e).
-    // Begitu keyboard muncul, nav itu sendiri sudah ketutup keyboard —
+    // Begitu keyboard muncul, nav itu sendiri sudah ketutup keyboard;
     // padding itu jadi ruang kosong tak berguna antara list hasil dan
     // keyboard. Proporsional ke tinggi keyboard asli (bukan angka tetap)
     // supaya list tidak ketutup keyboard maupun nyisain gap kosong di baliknya.
@@ -120,7 +120,7 @@ class SearchScreen extends ConsumerWidget {
                       }
                       return ListView.builder(
                         padding: EdgeInsets.only(bottom: resultsBottomPadding),
-                        // Semua row seragam tinggi — skip layout pass
+                        // Semua row seragam tinggi; skip layout pass
                         // per-item saat scroll (audit performa PRD.md § 11,
                         // 2026-08-07).
                         prototypeItem: SongRow(song: songs.first, onTap: () {}),
@@ -152,7 +152,7 @@ class SearchScreen extends ConsumerWidget {
   }
 }
 
-/// Circular lime play button trailing — Design.md § 7 "Song row" (bukan
+/// Circular lime play button trailing; Design.md § 7 "Song row" (bukan
 /// icon play kecil polos). Tap = shortcut sama seperti tap baris.
 class _PlayPill extends StatelessWidget {
   const _PlayPill({required this.onTap});

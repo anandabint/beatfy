@@ -16,7 +16,7 @@ import 'queue_manager.dart';
 
 /// Satu-satunya pintu ke `just_audio` player (Architecture.md § 4). Semua
 /// perubahan playback (`playing`, `position`, `queue index`) di-broadcast
-/// lewat stream `audio_service` (`playbackState`/`mediaItem`/`queue`) — UI
+/// lewat stream `audio_service` (`playbackState`/`mediaItem`/`queue`); UI
 /// dan provider tidak pernah subscribe langsung ke just_audio.
 class BeatfyAudioHandler extends BaseAudioHandler {
   BeatfyAudioHandler({
@@ -37,12 +37,12 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   final AppPreferencesRepository appPreferencesRepository;
   final OutputDetector _outputDetector;
 
-  // Audio Enhancement (Architecture.md § 7a) — pakai audio effect bawaan
+  // Audio Enhancement (Architecture.md § 7a); pakai audio effect bawaan
   // just_audio (native android.media.audiofx di baliknya), bukan platform
   // channel custom: just_audio sudah handle re-attach effect ke
   // audioSessionId baru tiap kali platform player di-recreate (ganti lagu/
   // reset), dan release native resource otomatis saat `_player.dispose()`.
-  // Tidak ada BassBoost API di just_audio — bass boost didekati lewat band
+  // Tidak ada BassBoost API di just_audio; bass boost didekati lewat band
   // rendah equalizer di `_applyEnhancementPreset`.
   final _loudnessEnhancer = ja.AndroidLoudnessEnhancer();
   final _equalizer = ja.AndroidEqualizer();
@@ -65,7 +65,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
       _outputDetector.activeOutputStream;
 
   // ---------------------------------------------------------------------
-  // Restore — Architecture.md § 4: WAJIB di-await di main() sebelum
+  // Restore; Architecture.md § 4: WAJIB di-await di main() sebelum
   // runApp(), supaya Now Playing/mini player pertama kali render sudah
   // dengan queue+posisi yang benar, bukan kosong lalu "loncat". Ini fix
   // langsung untuk bug "posisi playback reset ke awal lagu" (PRD.md § 1).
@@ -100,10 +100,10 @@ class BeatfyAudioHandler extends BaseAudioHandler {
       await _player.setLoopMode(QueueManager.toLoopMode(cache.repeatMode));
 
       // Status SELALU di-restore sebagai paused, terlepas dari isPlaying
-      // terakhir — keputusan final Pann (PRD.md § 11) untuk mencegah audio
+      // terakhir; keputusan final Pann (PRD.md § 11) untuk mencegah audio
       // auto-blast tak terduga (mis. HP baru diambil dari kantong). User
       // tap play manual untuk lanjut. `_player` sudah default tidak playing
-      // setelah `setAudioSources` — tidak ada langkah tambahan diperlukan.
+      // setelah `setAudioSources`; tidak ada langkah tambahan diperlukan.
       _broadcastState();
 
       // Simpan ulang cache supaya `isPlaying` yang tersimpan konsisten
@@ -111,7 +111,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
       // nilai lama dari sesi sebelumnya sampai event persist berikutnya.
       await _persist();
     } on Object {
-      // File yang direferensikan cache mungkin sudah tidak valid/pindah —
+      // File yang direferensikan cache mungkin sudah tidak valid/pindah;
       // gagal restore bukan alasan untuk crash startup.
     }
   }
@@ -131,7 +131,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
     await _player.play();
   }
 
-  /// Dipanggil setelah real file delete sukses (Architecture.md § 4a) —
+  /// Dipanggil setelah real file delete sukses (Architecture.md § 4a);
   /// kalau lagu yang dihapus ada di queue saat ini, buang dari queue tanpa
   /// crash; kalau itu lagu yang sedang diputar, auto-lanjut ke berikutnya
   /// (bukan pause diam di tengah lagu yang filenya sudah tidak ada).
@@ -189,7 +189,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   }
 
   // ---------------------------------------------------------------------
-  // BaseAudioHandler overrides — satu-satunya jalur play/pause/seek ke player.
+  // BaseAudioHandler overrides; satu-satunya jalur play/pause/seek ke player.
   // ---------------------------------------------------------------------
   @override
   Future<void> play() => _player.play();
@@ -223,10 +223,10 @@ class BeatfyAudioHandler extends BaseAudioHandler {
 
   // ---------------------------------------------------------------------
   // Android Auto / media browsing (docs/prompt_android_auto.md). Flat list
-  // only for now (Langkah 2) — album/artist/playlist grouping belum perlu,
+  // only for now (Langkah 2); album/artist/playlist grouping belum perlu,
   // itu iterasi lanjutan. Reuses `libraryRepository` (sumber yang sama
   // dipakai Library tab) dan `QueueManager.toMediaItem` (sumber yang sama
-  // dipakai notification/lock-screen) — Android Auto tidak pernah punya
+  // dipakai notification/lock-screen); Android Auto tidak pernah punya
   // query path atau representasi lagu sendiri (Architecture.md § 2 prinsip
   // 1 & 2).
   // ---------------------------------------------------------------------
@@ -243,7 +243,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   }
 
   /// Dipanggil head unit saat user pilih lagu dari daftar browse. Queue-nya
-  /// SELALU seluruh library (bukan cuma satu lagu) — supaya next/prev dari
+  /// SELALU seluruh library (bukan cuma satu lagu); supaya next/prev dari
   /// head unit punya sesuatu untuk dilanjutkan, sama seperti tap lagu dari
   /// Library tab di HP (`playFromSongs`, satu-satunya jalur mulai play,
   /// Architecture.md § 4).
@@ -271,7 +271,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
       onError: (Object error, StackTrace stackTrace) {
         // just_audio sudah mengubah error load jadi processingState idle;
         // di sini cuma jaga-jaga supaya stream tidak mati kalau ada error
-        // tak terduga — playback lain di queue harus tetap bisa dicoba.
+        // tak terduga; playback lain di queue harus tetap bisa dicoba.
       },
     );
 
@@ -282,7 +282,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
     });
 
     // Menutupi kedua kasus: event pause DAN event play (Architecture.md § 4
-    // minta persist "setiap event pause" — playingStream sekalian menutupi
+    // minta persist "setiap event pause"; playingStream sekalian menutupi
     // resume supaya status isPlaying di cache selalu akurat).
     _player.playingStream.listen((_) => unawaited(_persist()));
   }
@@ -329,10 +329,10 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   }
 
   /// Increment play count sekali per lagu, begitu posisi lewat >50% durasi
-  /// (Schema.md § 3 "PlayStats"). Subscription baru terpisah — tidak
+  /// (Schema.md § 3 "PlayStats"). Subscription baru terpisah; tidak
   /// mengubah listener playback/persist yang sudah teruji.
   void _listenToPlayStats() {
-    // `.distinct()` wajib — `currentIndexStream` bisa re-emit index yang
+    // `.distinct()` wajib; `currentIndexStream` bisa re-emit index yang
     // SAMA berkali-kali (bukan cuma saat pindah lagu), yang tanpa ini akan
     // reset `_playStatsCounted` berulang kali dan bikin satu kali dengar
     // tercatat sebagai banyak play (playCount meledak).
@@ -355,20 +355,20 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   }
 
   // ---------------------------------------------------------------------
-  // Audio Enhancement (Architecture.md § 7c, revisi 2026-08-28) — dulu aktif
+  // Audio Enhancement (Architecture.md § 7c, revisi 2026-08-28); dulu aktif
   // otomatis tanpa toggle dengan gain agresif (loudness +6 dB, EQ hingga +6
   // dB), yang terbukti menyebabkan warna suara "tidak natural" dibanding app
-  // passthrough (mis. Telegram) — makin kentara lewat Bluetooth SBC karena
+  // passthrough (mis. Telegram); makin kentara lewat Bluetooth SBC karena
   // headroom codec itu lebih sempit dari wired/speaker. Sekarang default-nya
   // OFF (playback = passthrough murni, sama seperti app lain), opt-in lewat
   // toggle+slider di Settings. Nilai `enabled`/`targetGain`/band gain
   // disimpan di sisi Dart oleh just_audio dan otomatis dikirim ulang tiap
-  // platform player baru dibuat (ganti lagu/reset session) — tidak perlu
+  // platform player baru dibuat (ganti lagu/reset session); tidak perlu
   // listen manual ke `androidAudioSessionId` di sini.
   // ---------------------------------------------------------------------
 
   /// Gain (dB) referensi tempat bentuk kurva `_presetGainForFrequency`
-  /// dikalibrasi — dipakai untuk menyekalakan band EQ proporsional terhadap
+  /// dikalibrasi; dipakai untuk menyekalakan band EQ proporsional terhadap
   /// `gainDb` yang dipilih user (lihat `_applyEnhancementPreset`).
   static const _referenceGainDb = 6.0;
 
@@ -382,18 +382,18 @@ class BeatfyAudioHandler extends BaseAudioHandler {
       }
 
       // Konfirmasi eksplisit lewat logcat (Architecture.md § 7c minta
-      // dipastikan effect ini benar-benar attach, bukan cuma ter-kode) —
+      // dipastikan effect ini benar-benar attach, bukan cuma ter-kode);
       // cari tag "AudioEnhancement" saat QC di device.
       debugPrint(
-        'AudioEnhancement: restored — enabled=${prefs.audioEnhancementEnabled}, '
+        'AudioEnhancement: restored; enabled=${prefs.audioEnhancementEnabled}, '
         'gain=${prefs.audioEnhancementGainDb}dB',
       );
     } on Object catch (error, stackTrace) {
       // Sebelumnya gagal diam-diam (unhandled Future error, tidak pernah
-      // ke-log jelas) — sekarang eksplisit supaya kelihatan di logcat kalau
+      // ke-log jelas); sekarang eksplisit supaya kelihatan di logcat kalau
       // effect ini gagal attach di device tertentu (mis. tidak didukung
       // chipset/OEM audio stack), bukan tertelan tanpa jejak.
-      debugPrint('AudioEnhancement: FAILED to attach — $error\n$stackTrace');
+      debugPrint('AudioEnhancement: FAILED to attach; $error\n$stackTrace');
     }
   }
 
@@ -421,7 +421,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   }
 
   /// Band gain baru bisa di-set setelah `parameters` resolve, yaitu setelah
-  /// platform player pertama kali aktif (butuh source ter-load) — biasanya
+  /// platform player pertama kali aktif (butuh source ter-load); biasanya
   /// sesaat setelah `restoreFromCache`/`playFromSongs` jalan.
   Future<void> _applyEnhancementPreset(double gainDb) async {
     await _loudnessEnhancer.setTargetGain(gainDb);
@@ -437,7 +437,7 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   }
 
   /// Bentuk kurva clarity/warmth + "bass boost" lewat band rendah equalizer
-  /// — just_audio tidak expose `BassBoost` API, jadi didekati lewat sini.
+  ///; just_audio tidak expose `BassBoost` API, jadi didekati lewat sini.
   /// Dikalibrasi di gain referensi `_referenceGainDb` (6 dB); nilai aktual
   /// yang diterapkan disekalakan proporsional lewat `_applyEnhancementPreset`
   /// terhadap gain yang user pilih di slider.

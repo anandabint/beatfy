@@ -14,8 +14,8 @@ import '../library/library_screen.dart';
 import '../playlist/playlist_list_screen.dart';
 import '../search/search_screen.dart';
 
-/// Root shell 4-tab — Architecture.md § 3a, Design.md § 7. `IndexedStack`
-/// menjaga state tiap tab (scroll position dst) saat pindah-pindah — pola
+/// Root shell 4-tab; Architecture.md § 3a, Design.md § 7. `IndexedStack`
+/// menjaga state tiap tab (scroll position dst) saat pindah-pindah; pola
 /// struktural dari `main_shell.dart` Planly, warna 100% ikut Design.md
 /// (bukan navy/teal Planly).
 class MainShell extends StatefulWidget {
@@ -32,12 +32,12 @@ class _MainShellState extends State<MainShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      // `extendBody: true` (Architecture.md § 3a — fix arsitektural asli
-      // sempat regresi jadi `false`, dikembalikan sesi ini) — body/list tiap
+      // `extendBody: true` (Architecture.md § 3a; fix arsitektural asli
+      // sempat regresi jadi `false`, dikembalikan sesi ini); body/list tiap
       // tab dirender penuh sampai bawah layar, mengalir di balik area
       // MiniPlayer+NavBar, bukan berhenti di atasnya. Wajib untuk efek frosted
       // glass di bawah (revisi blur, sesi ini): `BackdropFilter` di dalam
-      // MiniPlayer/_BottomNavBar butuh konten asli di baliknya untuk di-blur —
+      // MiniPlayer/_BottomNavBar butuh konten asli di baliknya untuk di-blur;
       // kalau body tidak extend, tidak ada apa-apa untuk di-sample, blur-nya
       // cuma nge-blur canvas kosong.
       extendBody: true,
@@ -70,7 +70,7 @@ class _MainShellState extends State<MainShell> {
 }
 
 /// Ukur tinggi asli dock (`MiniPlayer` + `_BottomNavBar`, termasuk safe-area
-/// bawah) langsung dari layout nyata, lalu simpan ke [dockHeightProvider] —
+/// bawah) langsung dari layout nyata, lalu simpan ke [dockHeightProvider];
 /// dipakai tiap tab (Home/Search/Library/Playlist) buat bottom padding
 /// list-nya. Ini gantiin konstanta ditebak yang sebelumnya berulang kali
 /// meleset dan jadi sumber bug "baris terakhir ketutup dock"/"gap kegedean"
@@ -112,7 +112,7 @@ class _DockMeasurerState extends ConsumerState<_DockMeasurer> {
   Widget build(BuildContext context) {
     // `MiniPlayer` nampilin/nyembunyiin dirinya sendiri berdasar ada/tidaknya
     // sesi playback aktif (lihat `MiniPlayer.build`), yang mengubah tinggi
-    // dock tanpa `_DockMeasurer` ini sendiri ikut rebuild — remeasure tiap
+    // dock tanpa `_DockMeasurer` ini sendiri ikut rebuild; remeasure tiap
     // kali status itu berubah (bukan tiap frame  boros), supaya
     // `dockHeightProvider` tetap akurat begitu MiniPlayer muncul/hilang.
     ref.listen(currentMediaItemProvider, (previous, next) {
@@ -126,11 +126,11 @@ class _DockMeasurerState extends ConsumerState<_DockMeasurer> {
   }
 }
 
-/// Floating pill nav — Design.md § 7 (revisi 2026-08-07): kapsul melayang
+/// Floating pill nav; Design.md § 7 (revisi 2026-08-07): kapsul melayang
 /// dengan margin dari tepi layar (bukan bar full-width nempel edge),
 /// icon-only (tanpa label teks), tab aktif = lingkaran solid lime
 /// membungkus icon. **Revisi frosted glass (sesi ini)**: background solid
-/// diganti translucent + `BackdropFilter` blur — list tab di baliknya
+/// diganti translucent + `BackdropFilter` blur; list tab di baliknya
 /// (`MainShell.extendBody: true` di atas) kelihatan blur lewat pill, bukan
 /// ketutup rapat warna solid.
 class _BottomNavBar extends StatelessWidget {
@@ -155,7 +155,7 @@ class _BottomNavBar extends StatelessWidget {
         AppSpacing.md,
         AppSpacing.sm,
       ),
-      // Isolasi `BackdropFilter` (mahal secara GPU) dari repaint tetangganya —
+      // Isolasi `BackdropFilter` (mahal secara GPU) dari repaint tetangganya;
       // pola sama dengan `GradientBlob` (audit performa PRD.md § 11).
       child: RepaintBoundary(
         child: ClipRRect(

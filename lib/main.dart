@@ -30,21 +30,21 @@ import 'services/home_widget_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Performance gate (PRD.md § 11) — Android caps render di 60Hz meski
+  // Performance gate (PRD.md § 11); Android caps render di 60Hz meski
   // device support lebih tinggi kecuali diminta eksplisit. Android-only API;
   // gagal diam-diam di platform lain (mis. flutter run -d chrome saat dev).
   try {
     await FlutterDisplayMode.setHighRefreshRate();
   } on Object {
-    // no-op — refresh rate tetap default kalau device/platform tidak support.
+    // no-op; refresh rate tetap default kalau device/platform tidak support.
   }
 
-  // Architecture.md § 7c (KRITIS) — harus eksplisit dan selesai sebelum
+  // Architecture.md § 7c (KRITIS); harus eksplisit dan selesai sebelum
   // player manapun mulai. Tanpa ini, just_audio hanya menerapkan config
   // AndroidAudioAttributes lewat fallback lazy `AudioSession.setActive()`
   // (dipanggil saat play() pertama), yang rawan race/di-preempt kalau ada
   // package lain yang sempat men-`configure()` session lebih dulu dengan
-  // config berbeda — hasilnya bisa jatuh ke profil Bluetooth panggilan
+  // config berbeda; hasilnya bisa jatuh ke profil Bluetooth panggilan
   // (SCO/HFP, mono narrowband, "memendam") bukan profil media (A2DP, stereo
   // full-bandwidth). Set eksplisit di sini menghilangkan race itu sama sekali.
   final audioSession = await AudioSession.instance;
@@ -69,33 +69,33 @@ Future<void> main() async {
     config: const AudioServiceConfig(
       androidNotificationChannelId: 'com.anandabint.beatfy.channel.audio',
       androidNotificationChannelName: 'Beatfy playback',
-      // Foreground service (dan notifikasinya) tetap hidup walau paused —
+      // Foreground service (dan notifikasinya) tetap hidup walau paused;
       // wajib untuk sesi playback aktif (Architecture.md § 4). NB:
       // `androidNotificationOngoing: true` butuh `androidStopForegroundOnPause:
       // true` (constraint dari package itu sendiri) jadi tidak dipasang
-      // bersamaan — false+false ini sudah cukup untuk menjaga service hidup.
+      // bersamaan; false+false ini sudah cukup untuk menjaga service hidup.
       androidStopForegroundOnPause: false,
       // Wajib true (sudah default package, dipasang eksplisit untuk
-      // dokumentasi) — tap notification memicu MainActivity, ditangkap
+      // dokumentasi); tap notification memicu MainActivity, ditangkap
       // `notificationClickedProvider` di app.dart untuk push Now Playing
       // (Architecture.md § 4a).
       androidNotificationClickStartsActivity: true,
       // Accent color notification/media session (dipakai juga oleh Android
       // Auto untuk aksen di kartu now-playing, docs/prompt_android_auto.md
-      // Langkah 3) — satu-satunya titik gaya yang bisa disentuh dari sisi
+      // Langkah 3); satu-satunya titik gaya yang bisa disentuh dari sisi
       // app, sisanya template sistem.
       notificationColor: AppColors.primary,
     ),
   );
 
-  // WAJIB selesai sebelum runApp() — restore queue+posisi sebelum UI pertama
+  // WAJIB selesai sebelum runApp(); restore queue+posisi sebelum UI pertama
   // kali render (Architecture.md § 4, fix bug utama PRD.md § 1).
   await audioHandler.restoreFromCache();
 
-  // Home screen widget (docs/prompt_home_widget.md) — dijalankan setelah
+  // Home screen widget (docs/prompt_home_widget.md); dijalankan setelah
   // restoreFromCache supaya push pertamanya sudah mencerminkan lagu yang
   // di-restore, bukan state kosong yang langsung menyusul dengan update
-  // kedua. Tidak pernah di-dispose — hidup selama proses Flutter hidup,
+  // kedua. Tidak pernah di-dispose; hidup selama proses Flutter hidup,
   // sama seperti provider lain yang subscribe ke `audioHandler`.
   unawaited(HomeWidgetService(audioHandler).start());
 

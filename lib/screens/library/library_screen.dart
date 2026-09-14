@@ -18,7 +18,7 @@ import '../../widgets/common/song_actions_sheet.dart';
 import '../../widgets/common/song_row.dart';
 import 'group_detail_screen.dart';
 
-/// Library screen — daftar lagu hasil scan, tap untuk play (PRD.md § 6.8).
+/// Library screen; daftar lagu hasil scan, tap untuk play (PRD.md § 6.8).
 class LibraryScreen extends ConsumerWidget {
   const LibraryScreen({super.key});
 
@@ -66,7 +66,7 @@ class _SongList extends ConsumerWidget {
     final favoriteIds = ref.watch(favoriteIdsProvider);
     final filter = ref.watch(libraryFilterProvider);
     // Body extend di balik dock buat frosted glass (MainShell.extendBody:
-    // true, Architecture.md § 3a) — padding bawah dipakai dari tinggi dock
+    // true, Architecture.md § 3a); padding bawah dipakai dari tinggi dock
     // hasil pengukuran layout nyata (`dockHeightProvider`, bukan konstanta
     // ditebak) supaya lagu terakhir tetap bisa discroll sepenuhnya di atas
     // MiniPlayer+NavBar, bukan permanen ketutup (§ 7e).
@@ -115,7 +115,7 @@ class _SongList extends ConsumerWidget {
                         padding: EdgeInsets.only(
                           bottom: dockClearance + AppSpacing.lg,
                         ),
-                        // Semua row seragam tinggi — skip layout pass per-item
+                        // Semua row seragam tinggi; skip layout pass per-item
                         // saat scroll (audit performa PRD.md § 11, 2026-08-07).
                         prototypeItem: SongRow(song: songs.first, onTap: () {}),
                         itemCount: songs.length,
@@ -161,7 +161,7 @@ class _SongList extends ConsumerWidget {
   }
 }
 
-/// Grouped rows buat filter Albums/Artists/Folders (PRD.md § 7 poin 6) —
+/// Grouped rows buat filter Albums/Artists/Folders (PRD.md § 7 poin 6);
 /// tap grup push ke [GroupDetailScreen] generic.
 class _GroupList extends ConsumerWidget {
   const _GroupList();
@@ -188,7 +188,7 @@ class _GroupList extends ConsumerWidget {
         }
         return ListView.builder(
           padding: EdgeInsets.only(bottom: dockClearance + AppSpacing.lg),
-          // Semua row seragam tinggi — skip layout pass per-item saat scroll
+          // Semua row seragam tinggi; skip layout pass per-item saat scroll
           // (audit performa PRD.md § 11, 2026-08-07).
           prototypeItem: LibraryGroupRow(group: groups.first, onTap: () {}),
           itemCount: groups.length,
@@ -295,7 +295,7 @@ class _PermissionDeniedView extends ConsumerWidget {
   }
 }
 
-/// Sort control — outline pill kecil (Design.md § 7), pengganti dropdown
+/// Sort control; outline pill kecil (Design.md § 7), pengganti dropdown
 /// text+arrow polos versi sebelumnya. Interaksi tetap `PopupMenuButton`.
 class _SortPill extends ConsumerWidget {
   const _SortPill();

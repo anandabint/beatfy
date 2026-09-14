@@ -94,7 +94,7 @@ The debug keystore is used automatically until a release keystore is set
 up (`flutter build apk --release` will still work, but the resulting APK
 must not be distributed until real signing is configured). To set one up:
 
-1. Generate a keystore (do this once, keep the file and passwords safe —
+1. Generate a keystore (do this once, keep the file and passwords safe;
    losing them means future releases can never be signed to match earlier
    ones):
 
@@ -104,7 +104,7 @@ must not be distributed until real signing is configured). To set one up:
    ```
 
    Place the resulting `beatfy-release.jks` **outside** of version control
-   (e.g. `android/beatfy-release.jks` — already covered by
+   (e.g. `android/beatfy-release.jks`; already covered by
    `android/.gitignore`'s `**/*.jks` rule).
 
 2. Copy `android/key.properties.example` to `android/key.properties` and

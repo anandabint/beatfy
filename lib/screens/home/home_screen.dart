@@ -28,9 +28,9 @@ final _homeFilterProvider = StateProvider<_HomeFilter>(
   (ref) => _HomeFilter.all,
 );
 
-/// Home tab — Recently Added + Top 10 (PRD.md § 7 poin 4). Header personal
+/// Home tab; Recently Added + Top 10 (PRD.md § 7 poin 4). Header personal
 /// (greeting + avatar + shortcut icons), filter pill row, featured card, dan
-/// gradient blob atmosferik — Design.md § 7 (revisi 2026-08-06).
+/// gradient blob atmosferik; Design.md § 7 (revisi 2026-08-06).
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -40,7 +40,7 @@ class HomeScreen extends ConsumerWidget {
     final topPlayed = ref.watch(topPlayedProvider);
     final filter = ref.watch(_homeFilterProvider);
     // Body extend di balik dock buat frosted glass (MainShell.extendBody:
-    // true, Architecture.md § 3a) — padding bawah dipakai dari tinggi dock
+    // true, Architecture.md § 3a); padding bawah dipakai dari tinggi dock
     // hasil pengukuran layout nyata (`dockHeightProvider`, bukan konstanta
     // ditebak) supaya section terakhir (Top 10) tetap bisa discroll
     // sepenuhnya di atas MiniPlayer+NavBar, bukan permanen ketutup (§ 7e).
@@ -100,13 +100,13 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-/// Greeting + avatar + shortcut icons — Design.md § 7 "Header Home"
+/// Greeting + avatar + shortcut icons; Design.md § 7 "Header Home"
 /// (revisi 2026-08-07: satu baris, bukan dua). Google Sign-In (PRD.md § 7
 /// poin 5) tetap sepenuhnya opsional: signed-in menampilkan
 /// "Hi, {nama depan}", belum/tidak sign-in fallback ke teks statis
-/// "Hi there" — logic sapaan berbasis jam dihapus total (PRD.md § 11),
+/// "Hi there"; logic sapaan berbasis jam dihapus total (PRD.md § 11),
 /// tidak pernah ada login wall. Tap avatar push [SettingsScreen] (PRD.md
-/// § 7 poin 5, revisi 2026-08-07) — sign-in/sign-out sekarang di dalam
+/// § 7 poin 5, revisi 2026-08-07); sign-in/sign-out sekarang di dalam
 /// Settings, bukan inline di sini.
 class _HomeHeader extends ConsumerWidget {
   const _HomeHeader();
@@ -190,7 +190,7 @@ class _HomeFilterPillRow extends ConsumerWidget {
   }
 }
 
-/// Hero card, gaya "Discover weekly" — surface lagu paling relevan yang
+/// Hero card, gaya "Discover weekly"; surface lagu paling relevan yang
 /// tersedia (top played, fallback recently added), bukan sekadar dekorasi:
 /// tombol play beneran memutar lagu tersebut.
 class _FeaturedCard extends ConsumerWidget {
@@ -380,7 +380,7 @@ class _Section extends ConsumerWidget {
   }
 }
 
-/// Top 10 — layout beda dari Recently Added: list vertikal dengan angka rank
+/// Top 10; layout beda dari Recently Added: list vertikal dengan angka rank
 /// oversized (Design.md § 7), bukan horizontal card scroll.
 class _TopSection extends ConsumerWidget {
   const _TopSection({
@@ -575,7 +575,7 @@ class _HomeSongCard extends StatelessWidget {
   }
 }
 
-/// Tinted leading icon — Design.md § 12: kotak circular (revisi § 5), bg
+/// Tinted leading icon; Design.md § 12: kotak circular (revisi § 5), bg
 /// `primary` 15% opacity, icon solid `primary`.
 class _TintedIcon extends StatelessWidget {
   const _TintedIcon({required this.icon});

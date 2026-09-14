@@ -14,7 +14,7 @@ import '../../widgets/common/empty_state.dart';
 import '../../widgets/common/song_artwork.dart';
 import 'playlist_detail_screen.dart';
 
-/// Playlist tab — list semua playlist (PRD.md § 7 poin 1).
+/// Playlist tab; list semua playlist (PRD.md § 7 poin 1).
 class PlaylistListScreen extends ConsumerWidget {
   const PlaylistListScreen({super.key});
 
@@ -22,7 +22,7 @@ class PlaylistListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final playlists = ref.watch(playlistsProvider);
     // Body extend di balik dock buat frosted glass (MainShell.extendBody:
-    // true, Architecture.md § 3a) — padding bawah dipakai dari tinggi dock
+    // true, Architecture.md § 3a); padding bawah dipakai dari tinggi dock
     // hasil pengukuran layout nyata (`dockHeightProvider`, bukan konstanta
     // ditebak) supaya baris terakhir grid tetap bisa discroll sepenuhnya di
     // atas MiniPlayer+NavBar, bukan permanen ketutup (§ 7e).
@@ -152,7 +152,7 @@ class PlaylistListScreen extends ConsumerWidget {
     );
   }
 
-  /// Dialog konfirmasi sebelum playlist benar-benar hilang — dipakai baik
+  /// Dialog konfirmasi sebelum playlist benar-benar hilang; dipakai baik
   /// dari swipe-to-delete (`confirmDismiss`) maupun menu "Hapus".
   static Future<bool?> _confirmDelete(BuildContext context, Playlist playlist) {
     return showDialog<bool>(
@@ -182,11 +182,11 @@ class PlaylistListScreen extends ConsumerWidget {
   }
 }
 
-/// Dashed-border card — tap membuka form lewat `showModalBottomSheet`
+/// Dashed-border card; tap membuka form lewat `showModalBottomSheet`
 /// (bukan expand inline lagi, lihat § catatan di bawah).
 ///
 /// Fix bug: form inline sebelumnya expand di dalam `Scaffold` tab Playlist,
-/// yang punya `resizeToAvoidBottomInset` default true — begitu keyboard
+/// yang punya `resizeToAvoidBottomInset` default true; begitu keyboard
 /// muncul, `MainShell` (outer Scaffold pembungkus bottom nav + mini player)
 /// ikut resize body-nya, jadi nav+mini player kedorong naik di atas keyboard.
 /// Modal bottom sheet dirender lewat `Navigator` overlay di atas seluruh
@@ -265,7 +265,7 @@ class _NewPlaylistSheetState extends ConsumerState<_NewPlaylistSheet> {
   @override
   void initState() {
     super.initState();
-    // Sheet baru selesai animasi masuk setelah frame pertama — request focus
+    // Sheet baru selesai animasi masuk setelah frame pertama; request focus
     // di post-frame supaya keyboard muncul begitu sheet kelihatan, bukan
     // race dengan transisi masuknya.
     WidgetsBinding.instance.addPostFrameCallback(
@@ -292,7 +292,7 @@ class _NewPlaylistSheetState extends ConsumerState<_NewPlaylistSheet> {
 
   @override
   Widget build(BuildContext context) {
-    // Padding manual mengikuti viewInsets.bottom (tinggi keyboard) — sheet
+    // Padding manual mengikuti viewInsets.bottom (tinggi keyboard); sheet
     // ini sendiri bukan Scaffold jadi tidak ada resizeToAvoidBottomInset
     // otomatis, harus diurus sendiri supaya form selalu terlihat di atas
     // keyboard.
@@ -432,7 +432,7 @@ class _PlaylistCard extends ConsumerWidget {
           children: [
             AspectRatio(
               aspectRatio: 1,
-              // SongArtwork sudah circular sendiri (Design.md § 5) — badge
+              // SongArtwork sudah circular sendiri (Design.md § 5); badge
               // ditumpuk di sudut kanan-bawah lingkaran, pola avatar+badge.
               child: Stack(
                 children: [
@@ -506,7 +506,7 @@ class _PlaylistCard extends ConsumerWidget {
   }
 }
 
-/// Tinted leading icon — Design.md § 12: kotak circular (revisi § 5), bg
+/// Tinted leading icon; Design.md § 12: kotak circular (revisi § 5), bg
 /// `primary` 15% opacity, icon solid `primary`. Badge kecil di pojok cover
 /// biar tiap card kelihatan jelas "ini playlist" walau covernya album art.
 class _TintedIcon extends StatelessWidget {

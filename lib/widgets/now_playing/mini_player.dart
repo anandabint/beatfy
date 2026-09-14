@@ -13,10 +13,10 @@ import '../../providers/playback_providers.dart';
 import '../../screens/now_playing/now_playing_screen.dart';
 import '../common/song_artwork.dart';
 
-/// Floating pill di atas bottom nav — Design.md § 7 ("Mini player"). Tap
+/// Floating pill di atas bottom nav; Design.md § 7 ("Mini player"). Tap
 /// untuk expand ke Now Playing screen. **Revisi frosted glass (sesi ini)**:
 /// background solid diganti translucent + `BackdropFilter` blur, sama pola
-/// dengan `_BottomNavBar` di `main_shell.dart` — list tab di baliknya
+/// dengan `_BottomNavBar` di `main_shell.dart`; list tab di baliknya
 /// (`MainShell.extendBody: true`) kelihatan blur lewat pill.
 class MiniPlayer extends ConsumerWidget {
   const MiniPlayer({super.key});
@@ -46,7 +46,7 @@ class MiniPlayer extends ConsumerWidget {
         AppSpacing.md,
         AppSpacing.sm,
       ),
-      // Isolasi `BackdropFilter` (mahal secara GPU) dari repaint tetangganya —
+      // Isolasi `BackdropFilter` (mahal secara GPU) dari repaint tetangganya;
       // pola sama dengan `GradientBlob` (audit performa PRD.md § 11).
       child: RepaintBoundary(
         child: ClipRRect(
@@ -55,7 +55,7 @@ class MiniPlayer extends ConsumerWidget {
             filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
             child: Material(
               color: AppColors.surface.withValues(alpha: 0.6),
-              // Default `clipBehavior` di `Material` adalah `Clip.none` —
+              // Default `clipBehavior` di `Material` adalah `Clip.none`;
               // tanpa ini, ink splash dari InkWell di bawah (yang membentang
               // selebar pill) bisa bocor melewati sudut membulat saat
               // ditekan, sekilas kelihatan seperti kotak di belakang bentuk
