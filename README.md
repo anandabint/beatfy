@@ -32,13 +32,13 @@ ads, no third-party analytics, no account required. Built with Flutter.
 - Play/pause/seek/next/prev, shuffle, repeat (off/one/all), dynamic queue
 - Now Playing screen with large album art and a scrubbing progress bar
 - Persistent mini player, tap to expand
-- Accurate state restore — reopen the app and your song, position, and
+- Accurate state restore: reopen the app and your song, position, and
   queue are exactly as you left them (always resumes **paused**, so audio
   never blasts out unexpectedly)
 - Full lock-screen & notification media controls, including Bluetooth
   headset buttons
 - Auto-pause when your Bluetooth/wired audio output disconnects
-- Optional audio enhancement (loudness & bass boost) — off by default, one
+- Optional audio enhancement (loudness & bass boost), off by default, one
   toggle and an intensity slider in Settings when you want it
 
 </td>
@@ -51,11 +51,11 @@ ads, no third-party analytics, no account required. Built with Flutter.
 - Browse by album, artist, or folder
 - Home tab: recently added + your Top 10 most-played
 - Real-time search across title, artist, and album
-- Playlists — create, rename, add/remove/reorder songs, multi-select songs
+- Playlists: create, rename, add/remove/reorder songs, multi-select songs
   to add in bulk
 - Favorites
 - Delete a song straight from your device (with an explicit, unmissable
-  confirmation — it's permanent)
+  confirmation, since it's permanent)
 - Back up your library to **your own** Google Drive account, restored
   automatically on a new device
 
@@ -71,7 +71,7 @@ ads, no third-party analytics, no account required. Built with Flutter.
 
 Grab the APK from the [Releases](../../releases) page. Since this isn't
 published on the Play Store, Android will warn about installing from an
-unknown source — that's normal for sideloaded APKs.
+unknown source. That's normal for sideloaded APKs.
 
 To verify the APK you downloaded matches the official release and hasn't
 been tampered with, compare its SHA-256 signing fingerprint against the one
@@ -131,12 +131,12 @@ must not be distributed until real signing is configured). To set one up:
 </div>
 
 - **Home screen widget** with mini player controls _(in testing)_
-- **Android Auto support** — browse and play your library from the car
+- **Android Auto support**: browse and play your library from the car
   display _(in testing)_
 - Audio enhancement (bass boost & clarity) is now an opt-in toggle with an
-  intensity slider in Settings, off by default — it used to run
+  intensity slider in Settings, off by default. It used to run
   automatically for everyone with a fixed gain
-- Multi-select in Library (Album/Artist/Folder view) — select multiple
+- Multi-select in Library (Album/Artist/Folder view): select multiple
   songs and add them all to a playlist at once
 - Song rows now show the track's own embedded artwork instead of falling
   back to shared album art
@@ -169,12 +169,12 @@ must not be distributed until real signing is configured). To set one up:
 Beatfy does not collect any user data, and has no ads or third-party
 analytics. The only data that ever leaves your device is the music files
 backed up to **your own** Google Drive account, and only if you turn the
-backup feature on — Beatfy has no server of its own that stores anything.
+backup feature on. Beatfy has no server of its own that stores anything.
 
 Google Sign-In is used solely to authorize that Drive backup and is entirely
 optional; every core feature (offline playback) works fully without signing
 in. The Drive access requested is the `drive.file` scope, which only grants
-access to files Beatfy itself creates in your Drive — never your full Drive
+access to files Beatfy itself creates in your Drive, never your full Drive
 contents.
 
 Beatfy is open source, so you (or anyone) can read exactly what the code
@@ -183,7 +183,7 @@ does rather than take this description on faith.
 ### "Google hasn't verified this app"
 
 If you sign in with Google, you may see a warning that Google hasn't
-verified this app. That's expected and not a sign of malware — it's simply
+verified this app. That's expected and not a sign of malware. It's simply
 what Google shows for any personal/open-source app that hasn't gone through
 their (paid, business-oriented) verification process. Click through to
 continue if you trust the source you downloaded the APK from (see above).
