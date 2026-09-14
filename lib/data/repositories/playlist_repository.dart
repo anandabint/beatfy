@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../models/playlist.dart';
 import '../local/hive/hive_setup.dart';
 
-/// Playlist CRUD + reorder — Schema.md § 3, PRD.md § 7 poin 1.
+/// Playlist CRUD + reorder  Schema.md § 3, PRD.md § 7 poin 1.
 class PlaylistRepository {
   PlaylistRepository({Box<Playlist>? box, Uuid? uuid})
     : _box = box ?? Hive.box<Playlist>(HiveBoxes.playlists),
@@ -66,6 +66,27 @@ class PlaylistRepository {
     );
   }
 
+  /// Tambah banyak lagu sekaligus  dipakai mode pilih-banyak (Library →
+  /// grup Album/Artist/Folder, `GroupDetailScreen`), satu write Hive untuk
+  /// semua lagu alih-alih panggil [addSong] berulang per lagu. Lagu yang
+  /// sudah ada di playlist dilewati (idempoten, sama semantik [addSong]).
+  Future<void> addSongs(String id, List<int> songIds) async {
+    final playlist = _box.get(id);
+    if (playlist == null) return;
+    final newIds = songIds.where((s) => !playlist.songIds.contains(s)).toList();
+    if (newIds.isEmpty) return;
+    await _box.put(
+      id,
+      Playlist(
+        id: playlist.id,
+        name: playlist.name,
+        songIds: [...playlist.songIds, ...newIds],
+        createdAt: playlist.createdAt,
+        coverSongId: playlist.coverSongId ?? newIds.first,
+      ),
+    );
+  }
+
   Future<void> removeSong(String id, int songId) async {
     final playlist = _box.get(id);
     if (playlist == null) return;
@@ -85,7 +106,7 @@ class PlaylistRepository {
     );
   }
 
-  /// Dipakai saat song dihapus dari device (Architecture.md § 4a) — beda
+  /// Dipakai saat song dihapus dari device (Architecture.md § 4a)  beda
   /// dari [removeSong] karena harus menyapu SEMUA playlist sekaligus, bukan
   /// satu playlist spesifik.
   Future<void> removeSongFromAllPlaylists(int songId) async {

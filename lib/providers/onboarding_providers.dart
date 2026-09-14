@@ -11,7 +11,7 @@ final appPreferencesRepositoryProvider = Provider<AppPreferencesRepository>((
   );
 });
 
-/// Flag onboarding (Architecture.md § 4b) — baca sinkron dari Hive, sudah
+/// Flag onboarding (Architecture.md § 4b)  baca sinkron dari Hive, sudah
 /// terbuka sebelum `runApp` (Architecture.md § 4, `HiveSetup.init`), jadi
 /// tidak butuh `AsyncNotifier`.
 class OnboardingNotifier extends Notifier<bool> {
@@ -20,7 +20,7 @@ class OnboardingNotifier extends Notifier<bool> {
       ref.watch(appPreferencesRepositoryProvider).get().hasSeenOnboarding;
 
   /// Dipanggil setelah onboarding selesai (baik lewat sign-in sukses maupun
-  /// "Lewati" di halaman sign-in) — Architecture.md § 4b. Tidak pernah
+  /// "Lewati" di halaman sign-in)  Architecture.md § 4b. Tidak pernah
   /// di-set balik ke `false`.
   Future<void> complete() async {
     final repository = ref.read(appPreferencesRepositoryProvider);

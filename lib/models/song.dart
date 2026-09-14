@@ -2,7 +2,7 @@ import 'package:hive_ce/hive_ce.dart';
 
 part 'song.g.dart';
 
-/// Cache hasil scan MediaStore — Schema.md § 2.
+/// Cache hasil scan MediaStore  Schema.md § 2.
 @HiveType(typeId: 0)
 class Song extends HiveObject {
   Song({
@@ -19,7 +19,7 @@ class Song extends HiveObject {
     this.dataPath,
   });
 
-  /// MediaStore audio id — primary key.
+  /// MediaStore audio id  primary key.
   @HiveField(0)
   final int id;
 
@@ -57,7 +57,7 @@ class Song extends HiveObject {
   final SongSource source;
 
   /// Real filesystem path (MediaStore `_data`), beda dari [filePath] yang
-  /// selalu `content://` URI. Best-effort — bisa null di beberapa kasus
+  /// selalu `content://` URI. Best-effort  bisa null di beberapa kasus
   /// scoped storage. Dipakai untuk folder grouping (Schema.md § 2), bukan
   /// untuk load ke just_audio (itu tetap lewat [filePath]).
   @HiveField(10)

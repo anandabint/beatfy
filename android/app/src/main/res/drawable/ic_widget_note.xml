@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generic note glyph used only as the widget's own placeholder icon
+     (e.g. the "no song yet" empty state) - not the artwork fallback, which
+     is a gradient bitmap generated natively in code to match
+     ArtworkGradients (see BeatfyHomeWidgetProvider.kt). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M9,15 A3,3 0 1,0 9,21 A3,3 0 1,0 9,15 Z M11,4 H12.5 V17 H11 Z M12.5,4 L18,7 L12.5,10 Z" />
+</vector>

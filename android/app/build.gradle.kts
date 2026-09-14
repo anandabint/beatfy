@@ -7,12 +7,12 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-// Release signing (Architecture.md § 9, hardening rilis publik) — dibaca
+// Release signing (Architecture.md § 9, hardening rilis publik)  dibaca
 // dari android/key.properties, file lokal yang TIDAK PERNAH di-commit
 // (sudah di-ignore, lihat android/.gitignore). Lihat README.md untuk cara
 // generate keystore-nya. Kalau file ini belum ada (mis. clone baru/belum
 // setup), release build fallback ke debug signing supaya `flutter build
-// apk --release`/`flutter run --release` tetap jalan tanpa error — cuma
+// apk --release`/`flutter run --release` tetap jalan tanpa error  cuma
 // APK hasilnya tidak boleh didistribusikan sampai keystore asli dipasang.
 val keystorePropertiesFile = rootProject.file("key.properties")
 val keystoreProperties = Properties()

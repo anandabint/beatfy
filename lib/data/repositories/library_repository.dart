@@ -7,7 +7,7 @@ import '../library/audio_query_service.dart';
 import '../library/title_cleaner.dart';
 import '../local/hive/hive_setup.dart';
 
-/// Sumber kebenaran library lagu — UI selalu lewat sini, tidak pernah baca
+/// Sumber kebenaran library lagu  UI selalu lewat sini, tidak pernah baca
 /// Hive/MediaStore langsung (Architecture.md § 2).
 class LibraryRepository {
   LibraryRepository({AudioQueryService? audioQueryService, Box<Song>? songsBox})
@@ -28,13 +28,13 @@ class LibraryRepository {
 
   Song? getById(int id) => _songsBox.get(id);
 
-  /// Buang satu entry dari cache — dipakai setelah real file delete sukses
+  /// Buang satu entry dari cache  dipakai setelah real file delete sukses
   /// (Architecture.md § 4a), bukan bagian dari alur scan biasa.
   Future<void> deleteFromCache(int id) async {
     await _songsBox.delete(id);
   }
 
-  /// Scan MediaStore lalu sinkronkan ke cache Hive. Incremental — lagu yang
+  /// Scan MediaStore lalu sinkronkan ke cache Hive. Incremental  lagu yang
   /// `dateModified`-nya sama dengan cache dilewati, tidak diproses ulang
   /// (Architecture.md § 6 poin 5). Lagu yang sudah tidak ada lagi di
   /// MediaStore (file dihapus) dibuang dari cache.
@@ -83,7 +83,7 @@ class LibraryRepository {
     return getCachedSongs();
   }
 
-  /// Grouping buat browse Library (PRD.md § 7 poin 6) — dipanggil dari
+  /// Grouping buat browse Library (PRD.md § 7 poin 6)  dipanggil dari
   /// provider, bukan widget (Rules.md § 5). Group tanpa `albumArtId`
   /// dikumpulkan jadi satu bucket "Unknown Album", bukan grup per-lagu.
   List<LibraryGroup> groupByAlbum(List<Song> songs) {
@@ -112,7 +112,7 @@ class LibraryRepository {
     return groups;
   }
 
-  /// Group by [Song.artist] — string yang sudah dibersihkan `TitleCleaner`,
+  /// Group by [Song.artist]  string yang sudah dibersihkan `TitleCleaner`,
   /// konsisten dengan yang ditampilkan di seluruh UI lain (bukan artist_id
   /// mentah MediaStore, yang bisa beda hasil split-nya).
   List<LibraryGroup> groupByArtist(List<Song> songs) {
@@ -141,7 +141,7 @@ class LibraryRepository {
   }
 
   /// Group by folder terakhir sebelum nama file, dari [Song.dataPath] (real
-  /// filesystem path, bukan `content://` URI — lihat Schema.md § 2). Lagu
+  /// filesystem path, bukan `content://` URI  lihat Schema.md § 2). Lagu
   /// tanpa `dataPath` (edge case scoped storage) masuk bucket "Lainnya".
   List<LibraryGroup> groupByFolder(List<Song> songs) {
     final byKey = <String, List<Song>>{};

@@ -3,7 +3,7 @@ import 'package:hive_ce/hive_ce.dart';
 import '../../models/favorite.dart';
 import '../local/hive/hive_setup.dart';
 
-/// Favorite lagu — Schema.md § 3, PRD.md § 7 poin 2 (bukan tab terpisah,
+/// Favorite lagu  Schema.md § 3, PRD.md § 7 poin 2 (bukan tab terpisah,
 /// section/filter di dalam Library tab).
 class FavoriteRepository {
   FavoriteRepository({Box<Favorite>? box})
@@ -23,7 +23,7 @@ class FavoriteRepository {
     }
   }
 
-  /// Dipakai saat song dihapus dari device (Architecture.md § 4a) — beda
+  /// Dipakai saat song dihapus dari device (Architecture.md § 4a)  beda
   /// dari [toggleFavorite] karena harus unconditional (tidak boleh malah
   /// nambah entry baru kalau kebetulan belum favorit).
   Future<void> remove(int songId) async {

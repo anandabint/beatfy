@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home widget layout (docs/prompt_home_widget.md Langkah 2). RemoteViews
+     only, no Flutter widget tree involved - rendered by the launcher
+     process. ~4x1 grid cell: circular artwork left, title+artist middle
+     (ellipsize), prev/play-pause/next right. Canvas background fixed
+     (@color/widget_canvas), not Material You dynamic color, so the widget
+     always reads as Beatfy regardless of device wallpaper. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background">
+
+    <!-- Playing state: artwork + title/artist + transport controls. -->
+    <LinearLayout
+        android:id="@+id/widget_content_row"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/widget_artwork"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_widget_note"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/widget_ink"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Beatfy" />
+
+            <TextView
+                android:id="@+id/widget_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/widget_ash"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/widget_btn_prev"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_widget_prev"
+            android:contentDescription="@null" />
+
+        <ImageButton
+            android:id="@+id/widget_btn_play_pause"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/widget_play_pause_circle"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_widget_play"
+            android:contentDescription="@null" />
+
+        <ImageButton
+            android:id="@+id/widget_btn_next"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_widget_next"
+            android:contentDescription="@null" />
+    </LinearLayout>
+
+    <!-- Empty state: no song has ever been played yet (fresh install, or
+         widget re-added after data was cleared). Shown instead of the row
+         above, never a crash/blank surface. -->
+    <TextView
+        android:id="@+id/widget_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/widget_ash"
+        android:textSize="12sp"
+        android:text="Buka Beatfy dan putar lagu"
+        android:visibility="gone" />
+</FrameLayout>

@@ -6,7 +6,7 @@ enum LibraryPermissionStatus { granted, denied, permanentlyDenied }
 ///
 /// Android 13+ pakai `READ_MEDIA_AUDIO` (`Permission.audio`); di bawahnya
 /// (termasuk device test Android 12) pakai `READ_EXTERNAL_STORAGE`
-/// (`Permission.storage`) — `Permission.audio` tidak pernah ter-grant di
+/// (`Permission.storage`)  `Permission.audio` tidak pernah ter-grant di
 /// bawah API 33, jadi keduanya dicek/diminta bersamaan. `permission_handler`
 /// otomatis no-op untuk grup yang tidak berlaku di versi Android yang sedang
 /// jalan (tidak ada permission name di manifest untuk grup itu), jadi tidak

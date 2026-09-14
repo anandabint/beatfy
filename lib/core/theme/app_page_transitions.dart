@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Transisi antar screen default — Design.md § 10: fade + slight slide
+/// Transisi antar screen default  Design.md § 10: fade + slight slide
 /// (~250-300ms, `Curves.easeOutCubic`), bukan default abrupt Material
 /// transition. Dipasang lewat `ThemeData.pageTransitionsTheme` supaya
 /// berlaku untuk semua navigasi `MaterialPageRoute`/`PageRoute`, bukan cuma

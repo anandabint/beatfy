@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android Auto app descriptor (docs/prompt_android_auto.md Langkah 1).
+     Declares this app supports media browsing/playback so Android Auto
+     shows it in the car launcher and routes to the MediaBrowserService
+     (com.ryanheise.audioservice.AudioService, already registered below). -->
+<automotiveApp>
+    <uses name="media"/>
+</automotiveApp>

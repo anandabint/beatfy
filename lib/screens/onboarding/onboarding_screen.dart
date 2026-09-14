@@ -8,10 +8,10 @@ import '../../providers/auth_providers.dart';
 import '../../providers/onboarding_providers.dart';
 import '../../services/permission_service.dart';
 
-/// Onboarding — Architecture.md § 4b, Design.md § 7. Muncul cuma sekali
+/// Onboarding  Architecture.md § 4b, Design.md § 7. Muncul cuma sekali
 /// (`AppPreferences.hasSeenOnboarding`), dipasang di `_RootGate` (app.dart)
 /// sebelum `MainShell`/restore gate. 5 halaman dalam satu `PageView`: 3
-/// slide intro, Permission screen, Sign-in screen — flat dark, **tanpa**
+/// slide intro, Permission screen, Sign-in screen  flat dark, **tanpa**
 /// gradient blob (itu ciri khas Home/Now Playing saja, Design.md § 11).
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -57,24 +57,24 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 children: [
                   const _IntroSlide(
                     icon: Icons.graphic_eq_rounded,
-                    title: 'Selamat datang di Beatfy',
+                    title: 'Musik pribadi, lebih sederhana',
                     description:
-                        'Music player pribadi buat lagu yang udah ada di '
-                        'HP kamu — simpel, cepat, tanpa iklan.',
+                        'Putar musik yang tersimpan di HP kamu dengan mudah '
+                        'cepat, nyaman, dan tanpa iklan.',
                   ),
                   const _IntroSlide(
                     icon: Icons.offline_bolt_rounded,
-                    title: 'Sepenuhnya offline-first',
+                    title: 'Nikmati musik secara offline',
                     description:
-                        'Musik kamu tetap di HP, nggak perlu internet buat '
-                        'dengar. Cloud cuma jaring pengaman, bukan keharusan.',
+                        'Musik tetap tersimpan di perangkat dan dapat diputar tanpa internet. '
+                        'Cloud hanya digunakan sebagai pengaman untuk data kamu.',
                   ),
                   const _IntroSlide(
                     icon: Icons.cloud_done_rounded,
-                    title: 'Aman kalau HP hilang',
+                    title: 'Data tetap aman',
                     description:
-                        'Backup otomatis ke Google Drive kamu sendiri — '
-                        'opsional, tapi bikin tenang kalau HP ganti/reset.',
+                        'Cadangkan data Beatfy secara otomatis ke Google Drive pribadi kamu '
+                        'opsional, tetapi siap digunakan saat kamu berganti atau mereset HP.',
                   ),
                   _PermissionPage(onDone: () => _goTo(_introSlideCount + 1)),
                   _SignInPage(onDone: _finish),
@@ -198,10 +198,10 @@ class _IntroSlide extends StatelessWidget {
   }
 }
 
-/// Permission screen — Design.md § 7. "Izinkan" memicu system permission
+/// Permission screen  Design.md § 7. "Izinkan" memicu system permission
 /// dialog Android (`PermissionService`, reuse logic v1) lalu lanjut ke
 /// halaman berikutnya terlepas hasilnya (izin bisa diberikan kapan saja
-/// nanti dari pengaturan sistem — onboarding tidak boleh macet di sini,
+/// nanti dari pengaturan sistem  onboarding tidak boleh macet di sini,
 /// konsisten prinsip "tidak memaksa", PRD.md § 5).
 class _PermissionPage extends StatefulWidget {
   const _PermissionPage({required this.onDone});
@@ -273,9 +273,9 @@ class _PermissionPageState extends State<_PermissionPage> {
   }
 }
 
-/// Sign-in screen (akhir onboarding) — Design.md § 7. Sama komponen dipakai
+/// Sign-in screen (akhir onboarding)  Design.md § 7. Sama komponen dipakai
 /// ulang untuk tombol login di Settings. Login sukses maupun skip
-/// sama-sama memanggil [onDone] (Architecture.md § 4b) — tidak pernah jadi
+/// sama-sama memanggil [onDone] (Architecture.md § 4b)  tidak pernah jadi
 /// login wall.
 class _SignInPage extends ConsumerStatefulWidget {
   const _SignInPage({required this.onDone});

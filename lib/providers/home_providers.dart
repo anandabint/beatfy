@@ -4,7 +4,7 @@ import '../data/repositories/play_stats_repository.dart';
 import '../models/song.dart';
 import 'library_providers.dart';
 
-/// Di-override di main() — instance yang sama dipakai `AudioHandler` untuk
+/// Di-override di main()  instance yang sama dipakai `AudioHandler` untuk
 /// `recordPlay` (Architecture.md § 2).
 final playStatsRepositoryProvider = Provider<PlayStatsRepository>((ref) {
   throw UnimplementedError(
@@ -16,7 +16,7 @@ final _playStatsChangesProvider = StreamProvider<void>((ref) {
   return ref.watch(playStatsRepositoryProvider).watchChanges();
 });
 
-/// Home tab § Recently Added — 20 lagu terbaru ditambahkan.
+/// Home tab § Recently Added  20 lagu terbaru ditambahkan.
 final recentlyAddedProvider = Provider<AsyncValue<List<Song>>>((ref) {
   final songsAsync = ref.watch(librarySongsProvider);
   return songsAsync.whenData((songs) {
@@ -26,7 +26,7 @@ final recentlyAddedProvider = Provider<AsyncValue<List<Song>>>((ref) {
   });
 });
 
-/// Home tab § Top 10 — berdasar play count. Watch `_playStatsChangesProvider`
+/// Home tab § Top 10  berdasar play count. Watch `_playStatsChangesProvider`
 /// supaya tetap reaktif walau `recordPlay` dipanggil dari AudioHandler,
 /// di luar alur provider biasa.
 final topPlayedProvider = Provider<AsyncValue<List<Song>>>((ref) {

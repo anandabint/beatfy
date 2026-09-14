@@ -12,7 +12,7 @@ import 'screens/onboarding/onboarding_screen.dart';
 import 'screens/restore/restore_screen.dart';
 import 'screens/shell/main_shell.dart';
 
-/// Global — dipakai [notificationClickedProvider] listener untuk push
+/// Global  dipakai [notificationClickedProvider] listener untuk push
 /// [NowPlayingScreen] dari mana pun (Architecture.md § 4a), termasuk saat
 /// notification di-tap dari state app manapun (foreground/background/belum
 /// jalan sama sekali), tanpa perlu `BuildContext` lokal.
@@ -26,7 +26,7 @@ class BeatfyApp extends ConsumerWidget {
     ref.listen(notificationClickedProvider, (previous, next) {
       final wasClicked = previous?.value ?? false;
       final isClicked = next.value ?? false;
-      // Edge-triggered — `notificationClicked` adalah `ValueStream` yang
+      // Edge-triggered  `notificationClicked` adalah `ValueStream` yang
       // tetap `true` sampai event berikutnya, bukan reset otomatis. Cuma
       // navigasi saat transisi false→true, bukan tiap kali provider rebuild.
       if (!wasClicked && isClicked) {
@@ -62,9 +62,9 @@ class BeatfyApp extends ConsumerWidget {
 /// (Architecture.md § 4b), baru setelah itu gate restore penuh (PRD.md § 7
 /// poin 5): kalau `songs` box kosong tapi akun Drive punya folder backup
 /// berisi file, tampilkan [RestoreScreen] dulu (tidak bisa di-skip) sebelum
-/// [MainShell] — kalau tidak, langsung [MainShell] seperti biasa. Cloud
+/// [MainShell]  kalau tidak, langsung [MainShell] seperti biasa. Cloud
 /// backup upload sendiri **tidak** trigger otomatis dari sini (Architecture.md
-/// § 4c) — cuma lewat tombol "Backup Sekarang" eksplisit di Settings.
+/// § 4c)  cuma lewat tombol "Backup Sekarang" eksplisit di Settings.
 class _RootGate extends ConsumerWidget {
   const _RootGate();
 

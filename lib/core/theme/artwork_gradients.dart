@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// (Architecture.md § 7b, Design.md § 7 "Artwork fallback gradient").
 ///
 /// Kurasi manual (bukan hue acak penuh spektrum dari HSL) supaya semua
-/// kombinasi tetap cocok tema gelap `#141414` — tiap pasangan sudah
+/// kombinasi tetap cocok tema gelap `#141414`  tiap pasangan sudah
 /// dipilih agar kontras cukup untuk ikon musik putih di atasnya tanpa
 /// terasa norak.
 abstract final class ArtworkGradients {
@@ -21,7 +21,7 @@ abstract final class ArtworkGradients {
     [Color(0xFF2E4A5C), Color(0xFF15242E)], // steel blue
   ];
 
-  /// Seed dari judul+artis lagu (bukan album — banyak file lokal tidak
+  /// Seed dari judul+artis lagu (bukan album  banyak file lokal tidak
   /// punya album tag, atau MediaStore mengisi placeholder generik yang
   /// sama untuk banyak lagu berbeda, yang sebelumnya bikin semua lagu
   /// tanpa artwork jatuh ke gradient identik).

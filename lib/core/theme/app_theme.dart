@@ -5,7 +5,7 @@ import 'app_page_transitions.dart';
 import 'app_radius.dart';
 import 'app_text_theme.dart';
 
-/// Single dark `ThemeData` — Beatfy is dark-only, no light theme (Design.md § 0).
+/// Single dark `ThemeData`  Beatfy is dark-only, no light theme (Design.md § 0).
 abstract final class AppTheme {
   static ThemeData get dark {
     const colorScheme = ColorScheme.dark(
@@ -24,7 +24,7 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: AppColors.canvas,
       fontFamily: 'Inter',
       dividerColor: AppColors.divider,
-      // Design.md § 12: highlight/splash yang kelihatan jelas di dark bg —
+      // Design.md § 12: highlight/splash yang kelihatan jelas di dark bg 
       // default Material ripple abu-abu terang kontrasnya rendah di near-black.
       splashColor: AppColors.surfaceHover.withValues(alpha: 0.5),
       highlightColor: AppColors.surfaceHover.withValues(alpha: 0.3),
@@ -38,7 +38,7 @@ abstract final class AppTheme {
         elevation: 0,
         // Fix bug: M3 default blends `colorScheme.surfaceTint` (follows
         // `primary`, lime) into the AppBar once `scrolledUnderElevation`
-        // kicks in (list scrolled off-top) — reads as a coklat/olive smear
+        // kicks in (list scrolled off-top)  reads as a coklat/olive smear
         // on the near-black canvas, reverting to pure black back at top.
         scrolledUnderElevation: 0,
         surfaceTintColor: Colors.transparent,

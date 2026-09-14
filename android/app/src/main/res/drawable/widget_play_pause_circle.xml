@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Matches the lime filled circle used for the play/pause button
+     everywhere else in the app (mini player, Now Playing) - prev/next stay
+     plain ink-tinted icons, only play/pause gets the accent treatment. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/widget_primary" />
+</shape>

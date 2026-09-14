@@ -5,10 +5,10 @@
 
 import 'package:audio_session/audio_session.dart';
 
-/// Deteksi Bluetooth/wired output connect-disconnect — Architecture.md § 5.
+/// Deteksi Bluetooth/wired output connect-disconnect  Architecture.md § 5.
 ///
 /// Dibangun di atas `audio_session`, yang membungkus mekanisme standar
-/// Android (`AudioManager` + broadcast `ACTION_AUDIO_BECOMING_NOISY`) — API
+/// Android (`AudioManager` + broadcast `ACTION_AUDIO_BECOMING_NOISY`)  API
 /// umum yang sama dipakai ExoPlayer/Media3 lewat
 /// `setHandleAudioBecomingNoisy`, bukan logic device-specific.
 class OutputDetector {
@@ -17,7 +17,7 @@ class OutputDetector {
 
   final Future<AudioSession> _sessionFuture;
 
-  /// Fires setiap kali output device (headset Bluetooth/wired) terputus —
+  /// Fires setiap kali output device (headset Bluetooth/wired) terputus 
   /// caller (AudioHandler) yang memutuskan mau auto-pause atau tidak.
   Stream<void> get onOutputDisconnected async* {
     final session = await _sessionFuture;
@@ -26,7 +26,7 @@ class OutputDetector {
 
   /// Ringkasan output aktif saat ini, dipakai provider kalau UI mau
   /// menampilkan indikator kecil (Architecture.md § 5 poin 3). Tidak ada
-  /// logic per-merek — cuma kategori umum dari [AudioDeviceType].
+  /// logic per-merek  cuma kategori umum dari [AudioDeviceType].
   Stream<ActiveOutput> get activeOutputStream async* {
     final session = await _sessionFuture;
     yield* session.devicesStream.map(_toActiveOutput);

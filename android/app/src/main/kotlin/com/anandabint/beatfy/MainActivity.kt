@@ -17,13 +17,13 @@ import java.io.File
 import java.io.FileOutputStream
 
 /**
- * PRD.md § 7.7 / Architecture.md § 4a — real file delete via scoped storage.
+ * PRD.md § 7.7 / Architecture.md § 4a  real file delete via scoped storage.
  * Extended (2026-08-07, cloud backup session) with `readMediaBytes` (upload
- * source) and `insertAudioFile` (restore target) — same channel, same
+ * source) and `insertAudioFile` (restore target)  same channel, same
  * rationale: no actively-maintained Flutter plugin wraps these MediaStore
  * write/read APIs reliably for arbitrary (non app-owned) content URIs.
  * Restore writes to the public Music collection, not app-private storage
- * (Schema.md § 5) — so restored files are visible to the same
+ * (Schema.md § 5)  so restored files are visible to the same
  * `AudioQueryService.scan()` used for every other song.
  */
 class MainActivity : AudioServiceActivity() {
@@ -55,7 +55,7 @@ class MainActivity : AudioServiceActivity() {
     }
 
     /**
-     * Sumber byte upload (Architecture.md § 7) — dibaca lewat resolver dari
+     * Sumber byte upload (Architecture.md § 7)  dibaca lewat resolver dari
      * URI `content://` yang sudah dipakai buat playback, bukan dari kolom
      * `_data` (tidak reliable buat baca byte di scoped storage Android 10+).
      */
@@ -73,7 +73,7 @@ class MainActivity : AudioServiceActivity() {
     }
 
     /**
-     * Target restore Drive (Schema.md § 5) — insert ke koleksi Audio publik
+     * Target restore Drive (Schema.md § 5)  insert ke koleksi Audio publik
      * `Music/Beatfy`, bukan app-private, supaya `AudioQueryService.scan()`
      * biasa langsung menemukannya tanpa kode khusus.
      */
@@ -115,7 +115,7 @@ class MainActivity : AudioServiceActivity() {
         return uri
     }
 
-    /** Android < 10 (pre scoped-storage) — file write langsung + media scan. */
+    /** Android < 10 (pre scoped-storage)  file write langsung + media scan. */
     private fun insertAudioFileLegacy(displayName: String, bytes: ByteArray, mimeType: String): Uri? {
         val musicDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), "Beatfy")
         if (!musicDir.exists()) musicDir.mkdirs()
@@ -147,7 +147,7 @@ class MainActivity : AudioServiceActivity() {
      * (di luar/tambahan dari dialog konfirmasi in-app Beatfy).
      *
      * Android 10 (Q, API 29): scoped storage sudah berlaku tapi
-     * `createDeleteRequest` belum ada — jalur resminya adalah tangkap
+     * `createDeleteRequest` belum ada  jalur resminya adalah tangkap
      * [RecoverableSecurityException] dari `contentResolver.delete()` lalu
      * jalankan `IntentSender` bawaan exception itu (pola khusus Q).
      *

@@ -18,15 +18,21 @@ class AppPreferencesAdapter extends TypeAdapter<AppPreferences> {
     };
     return AppPreferences(
       hasSeenOnboarding: fields[0] == null ? false : fields[0] as bool,
+      audioEnhancementEnabled: fields[1] == null ? false : fields[1] as bool,
+      audioEnhancementGainDb: fields[2] == null ? 2.5 : fields[2] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppPreferences obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.hasSeenOnboarding);
+      ..write(obj.hasSeenOnboarding)
+      ..writeByte(1)
+      ..write(obj.audioEnhancementEnabled)
+      ..writeByte(2)
+      ..write(obj.audioEnhancementGainDb);
   }
 
   @override

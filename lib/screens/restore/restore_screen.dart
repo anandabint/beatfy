@@ -9,11 +9,11 @@ import '../../providers/cloud_backup_providers.dart';
 import '../../providers/library_providers.dart';
 import '../../services/media_insert_service.dart';
 
-/// Full-screen, tidak bisa di-skip — muncul sekali di device baru saat
+/// Full-screen, tidak bisa di-skip  muncul sekali di device baru saat
 /// `songs` box kosong tapi akun Drive punya folder backup berisi file
 /// (PRD.md § 7 poin 5, Design.md § 7 "Restore screen"). Download semua file
 /// lalu jalankan scan lokal biasa supaya masuk `songs` box seperti lagu
-/// biasa (Schema.md § 5 — file ditulis ke koleksi Audio publik, bukan
+/// biasa (Schema.md § 5  file ditulis ke koleksi Audio publik, bukan
 /// app-private, justru supaya scan biasa ini bisa menemukannya).
 class RestoreScreen extends ConsumerStatefulWidget {
   const RestoreScreen({super.key, required this.files});
@@ -49,7 +49,7 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
           mimeType: file.mimeType ?? 'audio/mpeg',
         );
       } on Object {
-        // Lanjut ke file berikutnya — satu file gagal tidak boleh
+        // Lanjut ke file berikutnya  satu file gagal tidak boleh
         // menghentikan restore file lain (PRD.md § 7 poin 5 tidak
         // menyebutkan retry di sini; user bisa retry manual lain waktu
         // lewat re-scan/backup ulang).
@@ -66,7 +66,7 @@ class _RestoreScreenState extends ConsumerState<RestoreScreen> {
       return;
     }
 
-    // `songs` box sekarang tidak kosong lagi — invalidate supaya
+    // `songs` box sekarang tidak kosong lagi  invalidate supaya
     // `restoreGateProvider` re-evaluasi dan `_RootGate` (app.dart) pindah
     // ke `MainShell` secara reaktif, tanpa navigasi manual di sini.
     ref.invalidate(restoreGateProvider);

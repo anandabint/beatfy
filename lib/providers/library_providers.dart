@@ -9,14 +9,14 @@ import '../services/permission_service.dart';
 export '../services/permission_service.dart' show LibraryPermissionStatus;
 
 /// Di-override di main() dengan instance yang sama dipakai AudioHandler saat
-/// restore (Architecture.md § 2 — repository sebagai satu-satunya jalur data).
+/// restore (Architecture.md § 2  repository sebagai satu-satunya jalur data).
 final libraryRepositoryProvider = Provider<LibraryRepository>((ref) {
   throw UnimplementedError(
     'libraryRepositoryProvider must be overridden in main()',
   );
 });
 
-/// Status permission akses audio — dicek begitu provider ini pertama dibaca
+/// Status permission akses audio  dicek begitu provider ini pertama dibaca
 /// (dipicu saat LibraryScreen pertama kali dibuka), diminta otomatis kalau
 /// belum granted (PRD.md § 6.9, Rules.md § 7).
 class LibraryPermissionNotifier extends AsyncNotifier<LibraryPermissionStatus> {
@@ -51,7 +51,7 @@ class LibrarySongsNotifier extends AsyncNotifier<List<Song>> {
     final repository = ref.watch(libraryRepositoryProvider);
     final cached = repository.getCachedSongs();
     // Rescan sekali kalau ada entry lama tanpa `dataPath` (migrasi
-    // self-healing setelah field itu ditambah — Schema.md § 2) — murni
+    // self-healing setelah field itu ditambah  Schema.md § 2)  murni
     // MediaStore query lokal, bukan network, jadi aman dijalankan otomatis.
     final needsBackfill = cached.any((song) => song.dataPath == null);
     if (cached.isNotEmpty && !needsBackfill) return cached;
@@ -65,7 +65,7 @@ class LibrarySongsNotifier extends AsyncNotifier<List<Song>> {
     state = await AsyncValue.guard(repository.scan);
   }
 
-  /// Buang satu lagu dari state lokal tanpa re-scan MediaStore — dipakai
+  /// Buang satu lagu dari state lokal tanpa re-scan MediaStore  dipakai
   /// setelah real file delete sukses (Architecture.md § 4a). Update instan
   /// lewat state di sini (bukan nunggu rescan) supaya tidak race dengan
   /// jeda index MediaStore setelah delete request.
@@ -81,7 +81,7 @@ final librarySongsProvider =
       LibrarySongsNotifier.new,
     );
 
-/// Opsi sort library — PRD.md § 6.8 ("Sort by title/artist/tanggal ditambahkan").
+/// Opsi sort library  PRD.md § 6.8 ("Sort by title/artist/tanggal ditambahkan").
 enum LibrarySortOption { title, artist, dateAdded }
 
 final librarySortOptionProvider = StateProvider<LibrarySortOption>(
@@ -89,14 +89,14 @@ final librarySortOptionProvider = StateProvider<LibrarySortOption>(
 );
 
 /// [librarySongsProvider] yang sudah diurutkan sesuai [librarySortOptionProvider].
-/// Sort murni di memori — tidak menyentuh Hive/MediaStore lagi.
+/// Sort murni di memori  tidak menyentuh Hive/MediaStore lagi.
 final sortedLibrarySongsProvider = Provider<AsyncValue<List<Song>>>((ref) {
   final songsAsync = ref.watch(librarySongsProvider);
   final sortOption = ref.watch(librarySortOptionProvider);
   return songsAsync.whenData((songs) => _sortSongs(songs, sortOption));
 });
 
-/// Filter Library tab — section/filter Favorites di dalam tab (bukan tab
+/// Filter Library tab  section/filter Favorites di dalam tab (bukan tab
 /// terpisah), PRD.md § 7 poin 2. Empat opsi visual sesuai Design.md § 7
 /// (revisi 2026-08-06), tapi cuma dua yang punya filtering nyata: `all` dan
 /// `downloads` (semua file memang sudah lokal, jadi "downloads" == semua)
@@ -125,8 +125,8 @@ final libraryFilterProvider = StateProvider<LibraryFilter>(
   (ref) => LibraryFilter.all,
 );
 
-/// Grouped rows buat filter Albums/Artists/Folders — hanya dihitung kalau
-/// filter aktif memang salah satu dari itu (Rules.md § 5 — grouping logic
+/// Grouped rows buat filter Albums/Artists/Folders  hanya dihitung kalau
+/// filter aktif memang salah satu dari itu (Rules.md § 5  grouping logic
 /// tetap di repository, provider ini cuma nyambungin).
 final libraryGroupsProvider = Provider<AsyncValue<List<LibraryGroup>>>((ref) {
   final songsAsync = ref.watch(librarySongsProvider);

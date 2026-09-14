@@ -41,6 +41,12 @@ class PlaylistsNotifier extends Notifier<List<Playlist>> {
     _refresh();
   }
 
+  /// Tambah banyak lagu sekaligus  dipakai mode pilih-banyak (`GroupDetailScreen`).
+  Future<void> addSongs(String id, List<int> songIds) async {
+    await ref.read(playlistRepositoryProvider).addSongs(id, songIds);
+    _refresh();
+  }
+
   Future<void> removeSong(String id, int songId) async {
     await ref.read(playlistRepositoryProvider).removeSong(id, songId);
     _refresh();

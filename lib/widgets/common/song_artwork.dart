@@ -4,7 +4,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../core/theme/artwork_gradients.dart';
 import '../../models/song.dart';
 
-/// Artwork — Design.md § 8 (revisi 2026-08-06): **circular**, bukan
+/// Artwork  Design.md § 8 (revisi 2026-08-06): **circular**, bukan
 /// rounded-square lagi. Embedded artwork lokal lewat `on_audio_query` (tidak
 /// ada network image loader). Kalau tidak ada artwork, fallback ke gradient
 /// blok warna berbasis hash nama artist/album (bukan foto/logo generik),
@@ -16,6 +16,7 @@ import '../../models/song.dart';
 class SongArtwork extends StatelessWidget {
   const SongArtwork({
     super.key,
+    this.audioId,
     this.albumArtId,
     required this.gradientSeed,
     this.size = 48,
@@ -23,14 +24,18 @@ class SongArtwork extends StatelessWidget {
 
   factory SongArtwork.ofSong(Song song, {double size = 48}) {
     return SongArtwork(
+      audioId: song.id,
       albumArtId: song.albumArtId,
       gradientSeed: ArtworkGradients.songSeed(song.title, song.artist),
       size: size,
     );
   }
 
-  /// Album id dari MediaStore — null berarti tidak ada grouping album, selalu
-  /// pakai placeholder gradient.
+  /// Song id dari MediaStore  diprioritaskan agar embedded artwork lagu asli
+  /// dipakai, bukan hanya artwork album bersama.
+  final int? audioId;
+
+  /// Album id dari MediaStore, dipakai jika [audioId] tidak tersedia.
   final int? albumArtId;
   final String gradientSeed;
   final double size;
@@ -38,13 +43,17 @@ class SongArtwork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final placeholder = _GradientPlaceholder(seed: gradientSeed, size: size);
+    final artworkId = audioId ?? albumArtId;
 
     return ClipOval(
-      child: albumArtId == null
+      child: artworkId == null
           ? placeholder
           : QueryArtworkWidget(
-              id: albumArtId!,
-              type: ArtworkType.ALBUM,
+              id: artworkId,
+              type: audioId != null ? ArtworkType.AUDIO : ArtworkType.ALBUM,
+              size: 512,
+              quality: 100,
+              artworkQuality: FilterQuality.high,
               artworkWidth: size,
               artworkHeight: size,
               artworkFit: BoxFit.cover,

@@ -15,7 +15,7 @@ import '../../providers/playback_providers.dart';
 import '../../widgets/common/gradient_blob.dart';
 import '../../widgets/common/song_artwork.dart';
 
-/// Now Playing — album art besar, progress bar (scrubbing), kontrol utama,
+/// Now Playing  album art besar, progress bar (scrubbing), kontrol utama,
 /// info lagu (PRD.md § 6.3). Expand dari mini player lewat shared [Hero].
 class NowPlayingScreen extends ConsumerStatefulWidget {
   const NowPlayingScreen({super.key, required this.heroTag});
@@ -35,7 +35,7 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
   @override
   void initState() {
     super.initState();
-    // Posisi di PlaybackState di-extrapolate (bukan di-emit tiap frame) —
+    // Posisi di PlaybackState di-extrapolate (bukan di-emit tiap frame) 
     // ticker lokal ini cuma soal refresh visual seek bar, tidak menyentuh
     // player/persistence sama sekali.
     _ticker = Timer.periodic(const Duration(milliseconds: 500), (_) {
@@ -49,7 +49,7 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
     super.dispose();
   }
 
-  /// Ambient color dinamis Now Playing (Architecture.md § 7b) — dipanggil
+  /// Ambient color dinamis Now Playing (Architecture.md § 7b)  dipanggil
   /// tiap build tapi hanya benar-benar kerja sekali per pergantian lagu
   /// (guard `_ambientLoadedForSongId`), supaya tidak re-trigger tiap tick
   /// timer 500ms di atas. Cache di [AmbientColorCache] dicek dulu untuk
@@ -60,7 +60,7 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
 
     final albumArtId = mediaItem.extras?['albumArtId'] as int?;
     if (albumArtId == null) {
-      // Lagu tanpa artwork (pakai fallback gradient) — langsung default
+      // Lagu tanpa artwork (pakai fallback gradient)  langsung default
       // blob ungu-pink, tidak ada yang bisa diekstrak.
       _ambientColors = null;
       return;
@@ -102,6 +102,7 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
         (_dragValueMs ?? playbackState?.position.inMilliseconds.toDouble() ?? 0)
             .clamp(0, duration.inMilliseconds.toDouble());
     final albumArtId = mediaItem.extras?['albumArtId'] as int?;
+    final audioId = int.tryParse(mediaItem.id);
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
@@ -124,13 +125,13 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
             child: Column(
               children: [
-                // Flex tidak seimbang (revisi 2026-08-07, Design.md § 7) —
+                // Flex tidak seimbang (revisi 2026-08-07, Design.md § 7) 
                 // menaikkan posisi art dengan mengecilkan porsi Spacer atas
                 // relatif ke bawah, bukan padding tetap (tetap adaptif ke
                 // tinggi layar berapapun).
                 const Spacer(flex: 2),
                 Padding(
-                  // Inset lebih tipis dari sebelumnya (AppSpacing.lg → xs) —
+                  // Inset lebih tipis dari sebelumnya (AppSpacing.lg → xs) 
                   // memperbesar art ~8-10% (Design.md § 7 revisi 2026-08-07),
                   // masih menyisakan sedikit ruang di sekitar Hero.
                   padding: const EdgeInsets.all(AppSpacing.xs),
@@ -150,6 +151,7 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
                           ],
                         ),
                         child: SongArtwork(
+                          audioId: audioId,
                           albumArtId: albumArtId,
                           gradientSeed: ArtworkGradients.songSeed(
                             mediaItem.title,
@@ -161,9 +163,9 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
                     ),
                   ),
                 ),
-                // Design.md § 7 revisi 2026-08-07 — jarak art→judul lebih
+                // Design.md § 7 revisi 2026-08-07  jarak art→judul lebih
                 // lega, xl (32px) bukan md (12px) yang dipakai sebelumnya.
-                // Revisi lanjutan: +AppSpacing.md (12px) lagi di atas itu —
+                // Revisi lanjutan: +AppSpacing.md (12px) lagi di atas itu 
                 // art tetap di posisi/ukuran semula, cuma blok judul→volume
                 // digeser turun sedikit.
                 const SizedBox(height: AppSpacing.xl + AppSpacing.md),
@@ -183,13 +185,13 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
                   style: AppTextTheme.bodyMedium.copyWith(color: AppColors.ash),
                 ),
                 const SizedBox(height: AppSpacing.lg),
-                // Tinggi hit-area eksplisit (Design.md § polish 2026-08-08) —
+                // Tinggi hit-area eksplisit (Design.md § polish 2026-08-08) 
                 // tanpa ini, RenderBox Slider menyusut ke `trackHeight` saja
                 // begitu `thumbShape`/`overlayShape` di-null-kan (noThumb/
                 // noOverlay biasanya yang menentukan tinggi minimum), bikin
                 // area sentuh cuma beberapa px padahal visualnya terlihat
                 // lebih tebal. Bulatan/thumb visual TETAP tidak dimunculkan
-                // (noThumb dipertahankan) — cuma target sentuhnya diperlebar.
+                // (noThumb dipertahankan)  cuma target sentuhnya diperlebar.
                 SizedBox(
                   height: 44,
                   child: SliderTheme(
@@ -300,7 +302,7 @@ class _NowPlayingScreenState extends ConsumerState<NowPlayingScreen> {
   }
 }
 
-/// Volume slider fungsional — Design.md § 7 revisi 2026-08-07. Kontrol
+/// Volume slider fungsional  Design.md § 7 revisi 2026-08-07. Kontrol
 /// `STREAM_MUSIC` asli lewat `volume_controller` (bukan cuma dekorasi):
 /// baca volume awal, dengarkan perubahan dari tombol fisik/sumber lain
 /// (`addListener`), dan set volume saat slider digeser. `showSystemUI =
@@ -342,7 +344,7 @@ class _VolumeSliderState extends State<_VolumeSlider> {
       children: [
         const Icon(Icons.volume_down, color: AppColors.ash, size: 20),
         Expanded(
-          // Sama alasan dengan progress bar di atas — tinggi eksplisit
+          // Sama alasan dengan progress bar di atas  tinggi eksplisit
           // supaya area drag nyaman tanpa memunculkan thumb visual.
           child: SizedBox(
             height: 44,
@@ -386,7 +388,7 @@ class _PlayPauseButton extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         customBorder: const CircleBorder(),
-        // Splash gelap dari tema global akan terlihat kotor di atas hijau —
+        // Splash gelap dari tema global akan terlihat kotor di atas hijau 
         // pakai overlay hitam transparan (senada dengan konten on-primary).
         splashColor: Colors.black12,
         highlightColor: Colors.black12,

@@ -7,6 +7,7 @@ import 'package:just_audio/just_audio.dart' as ja;
 
 import '../data/local/hive/hive_setup.dart';
 import '../data/local/hive/playback_state_cache.dart';
+import '../data/repositories/app_preferences_repository.dart';
 import '../data/repositories/library_repository.dart';
 import '../data/repositories/play_stats_repository.dart';
 import '../models/song.dart';
@@ -21,17 +22,19 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   BeatfyAudioHandler({
     required this.libraryRepository,
     required this.playStatsRepository,
+    required this.appPreferencesRepository,
     OutputDetector? outputDetector,
   }) : _outputDetector = outputDetector ?? OutputDetector() {
     _listenToPlaybackEvents();
     _listenToOutputDisconnect();
     _listenToPlayStats();
     _startPeriodicPersist();
-    unawaited(_setupAudioEnhancement());
+    unawaited(_restoreAudioEnhancementFromPrefs());
   }
 
   final LibraryRepository libraryRepository;
   final PlayStatsRepository playStatsRepository;
+  final AppPreferencesRepository appPreferencesRepository;
   final OutputDetector _outputDetector;
 
   // Audio Enhancement (Architecture.md § 7a) — pakai audio effect bawaan
@@ -219,6 +222,47 @@ class BeatfyAudioHandler extends BaseAudioHandler {
       _player.seek(Duration.zero, index: index);
 
   // ---------------------------------------------------------------------
+  // Android Auto / media browsing (docs/prompt_android_auto.md). Flat list
+  // only for now (Langkah 2) — album/artist/playlist grouping belum perlu,
+  // itu iterasi lanjutan. Reuses `libraryRepository` (sumber yang sama
+  // dipakai Library tab) dan `QueueManager.toMediaItem` (sumber yang sama
+  // dipakai notification/lock-screen) — Android Auto tidak pernah punya
+  // query path atau representasi lagu sendiri (Architecture.md § 2 prinsip
+  // 1 & 2).
+  // ---------------------------------------------------------------------
+  @override
+  Future<List<MediaItem>> getChildren(
+    String parentMediaId, [
+    Map<String, dynamic>? options,
+  ]) async {
+    if (parentMediaId != AudioService.browsableRootId) return const [];
+    return libraryRepository
+        .getCachedSongs()
+        .map(QueueManager.toMediaItem)
+        .toList();
+  }
+
+  /// Dipanggil head unit saat user pilih lagu dari daftar browse. Queue-nya
+  /// SELALU seluruh library (bukan cuma satu lagu) — supaya next/prev dari
+  /// head unit punya sesuatu untuk dilanjutkan, sama seperti tap lagu dari
+  /// Library tab di HP (`playFromSongs`, satu-satunya jalur mulai play,
+  /// Architecture.md § 4).
+  @override
+  Future<void> playFromMediaId(
+    String mediaId, [
+    Map<String, dynamic>? extras,
+  ]) async {
+    final songId = int.tryParse(mediaId);
+    if (songId == null) return;
+
+    final songs = libraryRepository.getCachedSongs();
+    final index = songs.indexWhere((song) => song.id == songId);
+    if (index == -1) return;
+
+    await playFromSongs(songs, index);
+  }
+
+  // ---------------------------------------------------------------------
   // Broadcast state + persistence triggers.
   // ---------------------------------------------------------------------
   void _listenToPlaybackEvents() {
@@ -311,42 +355,38 @@ class BeatfyAudioHandler extends BaseAudioHandler {
   }
 
   // ---------------------------------------------------------------------
-  // Audio Enhancement (Architecture.md § 7a) — preset konservatif, aktif
-  // otomatis, tanpa toggle/UI. Nilai `enabled`/`targetGain`/band gain
+  // Audio Enhancement (Architecture.md § 7c, revisi 2026-08-28) — dulu aktif
+  // otomatis tanpa toggle dengan gain agresif (loudness +6 dB, EQ hingga +6
+  // dB), yang terbukti menyebabkan warna suara "tidak natural" dibanding app
+  // passthrough (mis. Telegram) — makin kentara lewat Bluetooth SBC karena
+  // headroom codec itu lebih sempit dari wired/speaker. Sekarang default-nya
+  // OFF (playback = passthrough murni, sama seperti app lain), opt-in lewat
+  // toggle+slider di Settings. Nilai `enabled`/`targetGain`/band gain
   // disimpan di sisi Dart oleh just_audio dan otomatis dikirim ulang tiap
   // platform player baru dibuat (ganti lagu/reset session) — tidak perlu
   // listen manual ke `androidAudioSessionId` di sini.
   // ---------------------------------------------------------------------
-  Future<void> _setupAudioEnhancement() async {
-    try {
-      // Architecture.md § 7c (2026-08-08) — preset lama (3 dB loudness, +3
-      // dB bass) terbukti terlalu konservatif, kalah jauh dari app
-      // pembanding (YouTube/Telegram) saat didengar langsung walau volume
-      // sistem sudah maksimal. Dinaikkan ke level yang terasa sepadan, tapi
-      // tetap di bawah preset agresif app "bass booster" murni (biasanya
-      // 6-12 dB) supaya file MP3 bitrate rendah tidak gampang pecah.
-      await _loudnessEnhancer.setTargetGain(6);
-      await _loudnessEnhancer.setEnabled(true);
-      await _equalizer.setEnabled(true);
 
-      // Band gain baru bisa di-set setelah `parameters` resolve, yaitu
-      // setelah platform player pertama kali aktif (butuh source ter-load) —
-      // biasanya sesaat setelah `restoreFromCache`/`playFromSongs` jalan.
-      final parameters = await _equalizer.parameters;
-      for (final band in parameters.bands) {
-        final gain = _presetGainForFrequency(band.centerFrequency)
-            .clamp(parameters.minDecibels, parameters.maxDecibels)
-            .toDouble();
-        if (gain != 0) await band.setGain(gain);
+  /// Gain (dB) referensi tempat bentuk kurva `_presetGainForFrequency`
+  /// dikalibrasi — dipakai untuk menyekalakan band EQ proporsional terhadap
+  /// `gainDb` yang dipilih user (lihat `_applyEnhancementPreset`).
+  static const _referenceGainDb = 6.0;
+
+  Future<void> _restoreAudioEnhancementFromPrefs() async {
+    final prefs = appPreferencesRepository.get();
+    try {
+      await _loudnessEnhancer.setEnabled(prefs.audioEnhancementEnabled);
+      await _equalizer.setEnabled(prefs.audioEnhancementEnabled);
+      if (prefs.audioEnhancementEnabled) {
+        await _applyEnhancementPreset(prefs.audioEnhancementGainDb);
       }
 
       // Konfirmasi eksplisit lewat logcat (Architecture.md § 7c minta
       // dipastikan effect ini benar-benar attach, bukan cuma ter-kode) —
       // cari tag "AudioEnhancement" saat QC di device.
       debugPrint(
-        'AudioEnhancement: attached OK — loudness=6dB, '
-        'bands=${parameters.bands.length}, '
-        'range=${parameters.minDecibels}..${parameters.maxDecibels}dB',
+        'AudioEnhancement: restored — enabled=${prefs.audioEnhancementEnabled}, '
+        'gain=${prefs.audioEnhancementGainDb}dB',
       );
     } on Object catch (error, stackTrace) {
       // Sebelumnya gagal diam-diam (unhandled Future error, tidak pernah
@@ -357,8 +397,50 @@ class BeatfyAudioHandler extends BaseAudioHandler {
     }
   }
 
-  /// Preset clarity/warmth + "bass boost" lewat band rendah equalizer —
-  /// just_audio tidak expose `BassBoost` API, jadi didekati lewat sini.
+  /// Toggle dipanggil dari Settings (`audioEnhancementEnabledProvider`).
+  /// Persist di sini (bukan di provider) supaya AudioHandler tetap
+  /// satu-satunya otoritas state playback+effect (Architecture.md § 4),
+  /// sama pola dengan `_persist()` untuk playback cache.
+  Future<void> setAudioEnhancementEnabled(bool enabled) async {
+    final prefs = appPreferencesRepository.get();
+    await appPreferencesRepository.save(
+      prefs.copyWith(audioEnhancementEnabled: enabled),
+    );
+    await _loudnessEnhancer.setEnabled(enabled);
+    await _equalizer.setEnabled(enabled);
+    if (enabled) await _applyEnhancementPreset(prefs.audioEnhancementGainDb);
+  }
+
+  /// Slider gain dipanggil dari Settings (`audioEnhancementGainProvider`).
+  Future<void> setAudioEnhancementGain(double gainDb) async {
+    final prefs = appPreferencesRepository.get();
+    await appPreferencesRepository.save(
+      prefs.copyWith(audioEnhancementGainDb: gainDb),
+    );
+    if (prefs.audioEnhancementEnabled) await _applyEnhancementPreset(gainDb);
+  }
+
+  /// Band gain baru bisa di-set setelah `parameters` resolve, yaitu setelah
+  /// platform player pertama kali aktif (butuh source ter-load) — biasanya
+  /// sesaat setelah `restoreFromCache`/`playFromSongs` jalan.
+  Future<void> _applyEnhancementPreset(double gainDb) async {
+    await _loudnessEnhancer.setTargetGain(gainDb);
+
+    final parameters = await _equalizer.parameters;
+    final scale = gainDb / _referenceGainDb;
+    for (final band in parameters.bands) {
+      final gain = (_presetGainForFrequency(band.centerFrequency) * scale)
+          .clamp(parameters.minDecibels, parameters.maxDecibels)
+          .toDouble();
+      await band.setGain(gain);
+    }
+  }
+
+  /// Bentuk kurva clarity/warmth + "bass boost" lewat band rendah equalizer
+  /// — just_audio tidak expose `BassBoost` API, jadi didekati lewat sini.
+  /// Dikalibrasi di gain referensi `_referenceGainDb` (6 dB); nilai aktual
+  /// yang diterapkan disekalakan proporsional lewat `_applyEnhancementPreset`
+  /// terhadap gain yang user pilih di slider.
   double _presetGainForFrequency(double centerFrequencyHz) {
     if (centerFrequencyHz < 250) return 6; // bass lebih terasa
     if (centerFrequencyHz < 1000) return 1; // low-mid sedikit terangkat

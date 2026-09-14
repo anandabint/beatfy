@@ -12,12 +12,11 @@ import 'media_read_service.dart';
 
 /// Upload/restore Google Drive (Architecture.md § 7, PRD.md § 7 poin 5).
 /// Folder tujuan "Beatfy Backup" di root Drive user (bukan `appDataFolder`
-/// tersembunyi — Pann bisa lihat langsung filenya via Drive app/browser).
+/// tersembunyi  Pann bisa lihat langsung filenya via Drive app/browser).
 class CloudBackupService {
-  CloudBackupService({required CloudBackupRepository repository})
-    : _repository = repository;
+  CloudBackupService({required this.repository});
 
-  final CloudBackupRepository _repository;
+  final CloudBackupRepository repository;
 
   static const _folderName = 'Beatfy Backup';
   static const _folderQuery =
@@ -30,7 +29,7 @@ class CloudBackupService {
   }
 
   Future<String> _ensureBackupFolder(drive.DriveApi api) async {
-    final cachedId = _repository.getMeta().driveFolderId;
+    final cachedId = repository.getMeta().driveFolderId;
     if (cachedId != null) return cachedId;
 
     final existing = await api.files.list(
@@ -51,19 +50,19 @@ class CloudBackupService {
       folderId = created.id!;
     }
 
-    await _repository.saveMeta(
-      _repository.getMeta().copyWith(driveFolderId: folderId),
+    await repository.saveMeta(
+      repository.getMeta().copyWith(driveFolderId: folderId),
     );
     return folderId;
   }
 
-  /// Upload semua [songs] yang belum ter-backup — tanpa record dianggap
+  /// Upload semua [songs] yang belum ter-backup  tanpa record dianggap
   /// pending juga, bukan cuma yang eksplisit `BackupStatus.pending`
   /// (Architecture.md § 7). Gagal di satu lagu tidak menghentikan lagu
-  /// lain — ditandai `failed` + `lastAttemptAt`, dicoba lagi trigger WiFi
+  /// lain  ditandai `failed` + `lastAttemptAt`, dicoba lagi trigger WiFi
   /// berikutnya (bukan retry loop langsung).
   Future<void> uploadPending(List<Song> songs) async {
-    if (!_repository.getMeta().autoBackupEnabled) {
+    if (!repository.getMeta().autoBackupEnabled) {
       debugPrint('[CloudBackup] uploadPending: auto-backup disabled, skip');
       return;
     }
@@ -83,11 +82,11 @@ class CloudBackupService {
     var doneCount = 0;
     var failedCount = 0;
     for (final song in songs) {
-      final record = _repository.getRecord(song.id);
+      final record = repository.getRecord(song.id);
       if (record?.backupStatus == BackupStatus.done) continue;
       pendingCount++;
 
-      await _repository.saveRecord(
+      await repository.saveRecord(
         CloudBackupRecord(
           songId: song.id,
           backupStatus: BackupStatus.uploading,
@@ -108,7 +107,7 @@ class CloudBackupService {
           uploadMedia: drive.Media(Stream.value(bytes), bytes.length),
         );
 
-        await _repository.saveRecord(
+        await repository.saveRecord(
           CloudBackupRecord(
             songId: song.id,
             driveFileId: uploaded.id,
@@ -120,7 +119,7 @@ class CloudBackupService {
       } on Object catch (e) {
         failedCount++;
         debugPrint('[CloudBackup] upload FAILED id=${song.id} "${song.title}": $e');
-        await _repository.saveRecord(
+        await repository.saveRecord(
           CloudBackupRecord(
             songId: song.id,
             backupStatus: BackupStatus.failed,
@@ -135,9 +134,9 @@ class CloudBackupService {
     );
   }
 
-  /// File di folder "Beatfy Backup" — dipakai restore gate + Restore screen.
+  /// File di folder "Beatfy Backup"  dipakai restore gate + Restore screen.
   /// Null kalau folder belum pernah dibuat sama sekali (akun belum pernah
-  /// backup) — caller wajib skip restore screen di kasus ini, bukan
+  /// backup)  caller wajib skip restore screen di kasus ini, bukan
   /// menampilkan progress kosong (PRD.md § 7 poin 5).
   Future<List<drive.File>?> restoreCandidates() async {
     final drive.DriveApi api;

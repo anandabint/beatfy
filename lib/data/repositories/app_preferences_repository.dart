@@ -3,7 +3,7 @@ import 'package:hive_ce/hive_ce.dart';
 import '../../models/app_preferences.dart';
 import '../local/hive/hive_setup.dart';
 
-/// Flag onboarding — Schema.md § 3. Satu entry saja (sama pola dengan
+/// Flag onboarding  Schema.md § 3. Satu entry saja (sama pola dengan
 /// `UserProfileRepository`), key tetap `_key`.
 class AppPreferencesRepository {
   AppPreferencesRepository({Box<AppPreferences>? box})

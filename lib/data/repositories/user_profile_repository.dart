@@ -3,7 +3,7 @@ import 'package:hive_ce/hive_ce.dart';
 import '../../models/user_profile.dart';
 import '../local/hive/hive_setup.dart';
 
-/// Cache lokal profil akun Google — Schema.md § 3. Satu entry saja (sama
+/// Cache lokal profil akun Google  Schema.md § 3. Satu entry saja (sama
 /// pola dengan `PlaybackStateCache`), key tetap `_key`.
 class UserProfileRepository {
   UserProfileRepository({Box<UserProfileCache>? box})

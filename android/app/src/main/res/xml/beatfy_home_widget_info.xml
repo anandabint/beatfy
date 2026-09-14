@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- docs/prompt_home_widget.md Langkah 2: one size for now, ~4x1 grid cell
+     (minWidth/minHeight approximate that on most launchers; targetCellWidth/
+     Height give an exact hint on launchers that support it, API 31+, ignored
+     harmlessly below that). -->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="250dp"
+    android:minHeight="60dp"
+    android:targetCellWidth="4"
+    android:targetCellHeight="1"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/beatfy_home_widget"
+    android:previewLayout="@layout/beatfy_home_widget"
+    android:resizeMode="horizontal"
+    android:widgetCategory="home_screen" />

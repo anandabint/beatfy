@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 
 /// Tulis file audio hasil restore Drive ke koleksi Audio publik
-/// (`Music/Beatfy`), bukan app-private storage (Schema.md § 5 — keputusan
-/// dilaporkan ke Pann) — supaya `AudioQueryService.scan()` biasa langsung
+/// (`Music/Beatfy`), bukan app-private storage (Schema.md § 5  keputusan
+/// dilaporkan ke Pann)  supaya `AudioQueryService.scan()` biasa langsung
 /// menemukannya. Lewat native channel yang sama dengan `MediaDeleteService`.
 abstract final class MediaInsertService {
   static const _channel = MethodChannel('com.anandabint.beatfy/media_store');

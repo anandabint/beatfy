@@ -2,7 +2,7 @@ import 'package:hive_ce/hive_ce.dart';
 
 part 'playlist.g.dart';
 
-/// Playlist buatan user — Schema.md § 3.
+/// Playlist buatan user  Schema.md § 3.
 @HiveType(typeId: 2)
 class Playlist extends HiveObject {
   Playlist({
@@ -13,7 +13,7 @@ class Playlist extends HiveObject {
     this.coverSongId,
   });
 
-  /// uuid — sama pola Planly.
+  /// uuid  sama pola Planly.
   @HiveField(0)
   final String id;
 

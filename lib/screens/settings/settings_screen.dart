@@ -7,6 +7,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_theme.dart';
 import '../../models/user_profile.dart';
+import '../../providers/audio_enhancement_providers.dart';
 import '../../providers/auth_providers.dart';
 import '../../providers/cloud_backup_providers.dart';
 import '../../widgets/common/user_avatar.dart';
@@ -15,9 +16,9 @@ final _packageInfoProvider = FutureProvider<PackageInfo>(
   (ref) => PackageInfo.fromPlatform(),
 );
 
-/// Entry point cloud backup — diakses dari tap avatar di header Home
+/// Entry point cloud backup  diakses dari tap avatar di header Home
 /// (PRD.md § 7 poin 5, bukan tab bottom nav terpisah). Flat dark, tanpa
-/// gradient blob (Design.md § 7 — konsisten Library/Search).
+/// gradient blob (Design.md § 7  konsisten Library/Search).
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -52,6 +53,8 @@ class SettingsScreen extends ConsumerWidget {
             const _SignOutButton(),
           ],
           const SizedBox(height: AppSpacing.xl),
+          const _AudioEnhancementSection(),
+          const SizedBox(height: AppSpacing.xl),
           const _AboutSection(),
         ],
       ),
@@ -59,7 +62,7 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-/// Section "Tentang" — PRD.md § 7 poin 10, Design.md § 7 row "Section
+/// Section "Tentang"  PRD.md § 7 poin 10, Design.md § 7 row "Section
 /// 'Tentang' (Settings)". List item sederhana (icon kiri + label + chevron
 /// kanan), bukan card besar, biar tetap terasa ringkas/minimalist.
 class _AboutSection extends ConsumerWidget {
@@ -107,6 +110,16 @@ class _AboutSection extends ConsumerWidget {
             context: context,
             applicationName: 'Beatfy',
             applicationVersion: packageInfo.value?.version,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.xs,
+            vertical: AppSpacing.sm,
+          ),
+          child: Text(
+            'Beatfy dirilis di bawah GNU General Public License v3 (GPLv3).',
+            style: AppTextTheme.bodySmall.copyWith(color: AppColors.stone),
           ),
         ),
       ],
@@ -163,7 +176,7 @@ class _AboutSection extends ConsumerWidget {
               'atau analytics pihak ketiga. Satu-satunya data yang keluar '
               'dari perangkat adalah file musik yang di-backup ke Google '
               'Drive akun kamu sendiri, hanya kalau fitur backup '
-              'diaktifkan — Beatfy tidak punya server sendiri yang '
+              'diaktifkan  Beatfy tidak punya server sendiri yang '
               'menyimpan data apapun.',
               style: AppTextTheme.bodyMedium.copyWith(color: AppColors.ash),
             ),
@@ -423,7 +436,7 @@ class _BackupSummary extends ConsumerWidget {
   }
 }
 
-/// Trigger backup manual (Architecture.md § 4c, revisi 2026-08-07) —
+/// Trigger backup manual (Architecture.md § 4c, revisi 2026-08-07) 
 /// dipilih ganti trigger otomatis-WiFi supaya popup pilih-akun Google
 /// (kalau device-nya butuh) terasa jadi kelanjutan wajar dari tap user.
 class _ManualBackupButton extends ConsumerWidget {
@@ -523,5 +536,100 @@ class _SignOutButton extends ConsumerWidget {
     if (confirmed == true) {
       await ref.read(userProfileProvider.notifier).signOut();
     }
+  }
+}
+
+/// Toggle + slider "Audio Enhancement" (Architecture.md § 7c, revisi
+/// 2026-08-28)  dulu loudness enhancer + EQ aktif otomatis tanpa kontrol
+/// user, dengan gain agresif yang bikin suara terasa "diwarnai" dibanding
+/// app passthrough (mis. Telegram), makin kentara lewat Bluetooth SBC.
+/// Sekarang default OFF (passthrough murni); user yang mau suara "lebih
+/// hidup" mengaktifkan sendiri di sini dan atur levelnya lewat slider.
+class _AudioEnhancementSection extends ConsumerWidget {
+  const _AudioEnhancementSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enabled = ref.watch(audioEnhancementEnabledProvider);
+    final gain = ref.watch(audioEnhancementGainProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+          child: Text(
+            'Audio',
+            style: AppTextTheme.labelMedium.copyWith(color: AppColors.ash),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.xs,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                activeThumbColor: AppColors.primary,
+                title: Text(
+                  'Audio Enhancement',
+                  style: AppTextTheme.bodyMedium.copyWith(
+                    color: AppColors.ink,
+                  ),
+                ),
+                subtitle: Text(
+                  'Bass boost & clarity. Default: playback apa '
+                  'adanya, tanpa diwarnai.',
+                  style: AppTextTheme.bodySmall.copyWith(
+                    color: AppColors.ash,
+                  ),
+                ),
+                value: enabled,
+                onChanged: (value) => ref
+                    .read(audioEnhancementEnabledProvider.notifier)
+                    .toggle(value),
+              ),
+              if (enabled) ...[
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Level',
+                        style: AppTextTheme.bodySmall.copyWith(
+                          color: AppColors.ash,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '${gain.toStringAsFixed(1)} dB',
+                      style: AppTextTheme.bodySmall.copyWith(
+                        color: AppColors.ash,
+                      ),
+                    ),
+                  ],
+                ),
+                Slider(
+                  value: gain,
+                  min: 0,
+                  max: 6,
+                  divisions: 12,
+                  activeColor: AppColors.primary,
+                  onChanged: (value) => ref
+                      .read(audioEnhancementGainProvider.notifier)
+                      .setGain(value),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

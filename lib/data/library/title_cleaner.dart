@@ -1,4 +1,4 @@
-/// Port dari `TitleCleaner.kt` (versi Kotlin lama) — Architecture.md § 3, § 6.
+/// Port dari `TitleCleaner.kt` (versi Kotlin lama)  Architecture.md § 3, § 6.
 ///
 /// Strip noise text umum di judul hasil download ("Official Audio", tag
 /// bitrate, dst) dan pecah pola nama file "Artist - Title" kalau field
@@ -25,7 +25,7 @@ abstract final class TitleCleaner {
   static final _underscore = RegExp(r'_+');
 
   /// Separator dash yang biasa dipakai judul unduhan gaya "Artis - Judul".
-  static final _artistTitleSeparator = RegExp(r'\s+[-–—]\s+');
+  static final _artistTitleSeparator = RegExp(r'\s+[-–]\s+');
 
   static const _unknownArtistMarkers = {
     'unknown artist',
@@ -59,7 +59,7 @@ abstract final class TitleCleaner {
       return CleanedMetadata(title: cleanedTitle, artist: rawArtist.trim());
     }
 
-    // Cuma pecah kalau separatornya muncul TEPAT sekali — kalau ada beberapa
+    // Cuma pecah kalau separatornya muncul TEPAT sekali  kalau ada beberapa
     // " - " (mis. "Al - Kahfi - hasa albalushi"), ambigu mana yang batas
     // artis/judul, jadi dibiarkan saja daripada salah tebak.
     final separatorMatches = _artistTitleSeparator

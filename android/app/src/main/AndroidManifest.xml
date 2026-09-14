@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Library scan (Rules.md § 7 — requested at runtime on first scan, not on app open) -->
+    <!-- Library scan (Rules.md § 7  requested at runtime on first scan, not on app open) -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <!-- Pre-Android 13 equivalent, for devices below API 33 (PRD.md § 6.9) -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Google Sign-In (PRD.md § 7 poin 5) — app was offline-only before this,
+    <!-- Google Sign-In (PRD.md § 7 poin 5)  app was offline-only before this,
          no network permission existed yet. Sign-in itself stays optional at
          the UI level; this permission only unblocks the socket, it doesn't
          force any network call to happen. -->
@@ -22,7 +22,7 @@
     <!-- connectivity_plus needs this to detect the Wi-Fi trigger -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Legacy fallback for restore's MediaStore insert on API < 29
-         (scoped storage isn't in effect yet there) — same maxSdkVersion
+         (scoped storage isn't in effect yet there)  same maxSdkVersion
          pattern as READ_EXTERNAL_STORAGE above. -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
 
@@ -58,8 +58,18 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <!-- Android Auto (docs/prompt_android_auto.md)  declares this app as a
+             media app so it shows up in the car launcher. Points at
+             res/xml/automotive_app_desc.xml (`<uses name="media"/>`). The
+             MediaBrowserService intent-filter below (already present, added
+             alongside the AudioService registration) is what the head unit
+             actually binds to once it picks this app. -->
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
         <!-- Impeller/Vulkan never submits a first frame on this device's GPU driver
-             (window stays stuck at DRAW_PENDING, confirmed via `dumpsys window` —
+             (window stays stuck at DRAW_PENDING, confirmed via `dumpsys window` 
              Dart-side logic runs fine, e.g. playback/notification work, but nothing
              ever paints). Falling back to the older Skia backend, which is broadly
              compatible. -->
@@ -67,7 +77,7 @@
             android:name="io.flutter.embedding.android.EnableImpeller"
             android:value="false" />
 
-        <!-- audio_service foreground playback service — mediaPlayback type per Rules.md § 7.
+        <!-- audio_service foreground playback service  mediaPlayback type per Rules.md § 7.
              Bundled class from the audio_service plugin; not started until the AudioHandler
              (Architecture.md § 3) is implemented in a later session. -->
         <service
@@ -88,6 +98,17 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".BeatfyHomeWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/beatfy_home_widget_info" />
+        </receiver>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
@@ -95,6 +116,10 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO"/>
+            <data android:scheme="mailto"/>
+        </intent>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>

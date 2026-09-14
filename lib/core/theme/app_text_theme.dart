@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Typography tokens — Design.md § 3 (revisi 2026-08-06). Dua font family:
+/// Typography tokens  Design.md § 3 (revisi 2026-08-06). Dua font family:
 /// **Outfit** untuk display/heading/angka rank, **Inter** untuk body/label.
-/// `TextTheme` (Material 3) has no `caption`/`rankNumber` slot — keduanya
+/// `TextTheme` (Material 3) has no `caption`/`rankNumber` slot  keduanya
 /// diekspos terpisah di bawah.
 abstract final class AppTextTheme {
   static const _display = 'Outfit';
@@ -22,7 +22,7 @@ abstract final class AppTextTheme {
     height: 1.3,
   );
 
-  /// Angka rank 1-3 di Top 10 — oversized, sesuai temuan Figma Make.
+  /// Angka rank 1-3 di Top 10  oversized, sesuai temuan Figma Make.
   static const rankNumber = TextStyle(
     fontFamily: _display,
     fontSize: 30,

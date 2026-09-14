@@ -7,6 +7,7 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_theme.dart';
 import '../../models/song.dart';
+import '../../providers/layout_providers.dart';
 import '../../providers/library_providers.dart';
 import '../../providers/playback_providers.dart';
 import '../../widgets/common/empty_state.dart';
@@ -43,15 +44,19 @@ class SearchScreen extends ConsumerWidget {
     final resultsAsync = ref.watch(_searchResultsProvider);
     final currentSongId = ref.watch(currentMediaItemProvider).value?.id;
     // Bottom padding di bawah biasanya dicadangkan buat bottom-nav/mini-
-    // player supaya konten tidak ketutup nav pill. Begitu keyboard muncul,
-    // nav itu sendiri sudah ketutup keyboard — padding itu jadi ruang kosong
-    // tak berguna antara list hasil dan keyboard. Proporsional ke tinggi
-    // keyboard asli (bukan angka tetap) supaya list tidak ketutup keyboard
-    // maupun nyisain gap kosong di baliknya.
+    // player supaya konten tidak ketutup nav pill — dipakai dari tinggi dock
+    // hasil pengukuran layout nyata (`dockHeightProvider`, sama pola dengan
+    // Home/Library, bukan konstanta ditebak — screen ini juga dipakai
+    // sebagai tab `MainShell.extendBody: true`, Architecture.md § 3a/§ 7e).
+    // Begitu keyboard muncul, nav itu sendiri sudah ketutup keyboard —
+    // padding itu jadi ruang kosong tak berguna antara list hasil dan
+    // keyboard. Proporsional ke tinggi keyboard asli (bukan angka tetap)
+    // supaya list tidak ketutup keyboard maupun nyisain gap kosong di baliknya.
     final viewInsetsBottom = MediaQuery.of(context).viewInsets.bottom;
+    final dockClearance = ref.watch(dockHeightProvider);
     final resultsBottomPadding = viewInsetsBottom > 0
         ? viewInsetsBottom + AppSpacing.sm
-        : AppSpacing.xxxl;
+        : dockClearance + AppSpacing.sm;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

@@ -4,17 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/auth_providers.dart';
 
-/// Avatar user — Design.md § 7 "Avatar/foto profil". 3 state, dipakai di
+/// Avatar user  Design.md § 7 "Avatar/foto profil". 3 state, dipakai di
 /// header Home dan Settings:
 ///
 /// (a) Sign-in + akun Google punya foto → foto asli (`photoUrl`, di-cache
-///     di `UserProfileCache` saat sign-in — Architecture.md § 4c, tidak ada
+///     di `UserProfileCache` saat sign-in  Architecture.md § 4c, tidak ada
 ///     call live di sini). Gagal load → fallback ke state (b) lewat
 ///     `Image.network.errorBuilder` (Flutter re-render otomatis, tidak
 ///     butuh state manual).
 /// (b) Sign-in tapi akun tidak punya foto → placeholder netral (icon
 ///     person generik, tint lime).
-/// (c) Belum sign-in → **bukan** placeholder yang mirip foto profil — icon
+/// (c) Belum sign-in → **bukan** placeholder yang mirip foto profil  icon
 ///     outline tanpa background bulat solid, supaya user tidak salah kira
 ///     sudah login.
 class UserAvatar extends ConsumerWidget {

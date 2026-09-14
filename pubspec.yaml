@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.2+2
 
 environment:
   sdk: ^3.12.2
@@ -38,7 +38,7 @@ dependencies:
   # State management (Architecture.md § 1)
   flutter_riverpod: ^3.4.2
 
-  # Local storage — hive_ce: actively maintained community continuation of
+  # Local storage  hive_ce: actively maintained community continuation of
   # Hive (original `hive` last published 4 years ago). Drop-in API-compatible,
   # reported to Pann and approved before use.
   hive_ce: ^2.19.3
@@ -52,7 +52,7 @@ dependencies:
   # Android "becoming noisy" (output disconnect) broadcast.
   audio_session: ^0.2.4
 
-  # Library scan — MediaStore audio query. Evaluated alternatives
+  # Library scan  MediaStore audio query. Evaluated alternatives
   # (on_audio_query_pluse, flutter_music_picker) at scaffold time; none had
   # meaningfully better maintenance signal, kept as default per Architecture.md.
   on_audio_query: ^2.9.0
@@ -66,7 +66,7 @@ dependencies:
   path: ^1.9.1
   # Pinned below 13.0.0: that version bumps Android compileSdk to 37, which
   # this machine's SDK Manager cannot resolve yet (installs as "android-37.0",
-  # AGP looks for "android-37" — a real environment gap, not our bug).
+  # AGP looks for "android-37"  a real environment gap, not our bug).
   permission_handler: ^12.0.0
   google_sign_in: ^7.2.0
   share_plus: ^13.3.0
@@ -81,13 +81,23 @@ dependencies:
   package_info_plus: ^10.2.1
   url_launcher: ^6.3.1
 
-  # Performance gate (PRD.md § 11, Architecture.md § 1) — Android default caps
+  # Performance gate (PRD.md § 11, Architecture.md § 1)  Android default caps
   # render di 60Hz meski device support lebih tinggi; set ke Hz maksimum device.
   flutter_displaymode: ^0.6.0
 
-  # Sesi finalisasi (Architecture.md § 7b) — ambient color dinamis Now
+  # Sesi finalisasi (Architecture.md § 7b)  ambient color dinamis Now
   # Playing dari dominant color artwork.
   palette_generator: ^0.3.3
+
+  # Home screen widget (docs/prompt_home_widget.md) — jembatan Flutter ke
+  # App Widget native (RemoteViews/AppWidgetProvider Kotlin). Cuma dipakai
+  # untuk push data (title/artist/artwork/playing) + trigger redraw; tombol
+  # prev/play-pause/next widget TIDAK lewat callback Dart home_widget —
+  # langsung native PendingIntent ke
+  # `com.ryanheise.audioservice.MediaButtonReceiver` yang sudah ada, sama
+  # persis jalur yang dipakai notification media control (lihat
+  # `BeatfyHomeWidgetProvider.kt`).
+  home_widget: ^0.9.4
 
 dev_dependencies:
   flutter_test:
@@ -104,11 +114,11 @@ dev_dependencies:
   hive_ce_generator: ">=1.11.0 <1.11.3"
   build_runner: ^2.15.1
 
-  # Sesi finalisasi (Architecture.md § 7b) — generator app icon custom dari
+  # Sesi finalisasi (Architecture.md § 7b)  generator app icon custom dari
   # logo.png, dev-only tool (tidak dibundling ke APK final).
   flutter_launcher_icons: ^0.14.4
 
-  # Splash screen (Design.md § 7) — generator splash native Android dari
+  # Splash screen (Design.md § 7)  generator splash native Android dari
   # config di bawah, dev-only tool (tidak dibundling ke APK final).
   flutter_native_splash: ^2.4.3
 
@@ -171,10 +181,10 @@ flutter:
   assets:
     - assets/icon/logo.png
 
-# Sesi finalisasi (Architecture.md § 7b) — app icon custom, generate lewat
+# Sesi finalisasi (Architecture.md § 7b)  app icon custom, generate lewat
 # `dart run flutter_launcher_icons` (legacy + adaptive icon Android 8+).
 # Background adaptive icon dicocokkan ke canvas dark tema app (Design.md §2)
-# — logo.png sendiri full-bleed tanpa padding bawaan, jadi dipakai apa
+#  logo.png sendiri full-bleed tanpa padding bawaan, jadi dipakai apa
 # adanya untuk foreground+legacy (tidak di-resize manual, sesuai instruksi).
 flutter_launcher_icons:
   android: true

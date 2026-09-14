@@ -1,4 +1,4 @@
-/// Spacing tokens — Design.md § 4. 8px base unit.
+/// Spacing tokens  Design.md § 4. 8px base unit.
 abstract final class AppSpacing {
   static const xxs = 2.0;
   static const xs = 4.0;

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/repositories/favorite_repository.dart';
 
-/// Di-override di main() (Architecture.md § 2 — repository sebagai
+/// Di-override di main() (Architecture.md § 2  repository sebagai
 /// satu-satunya jalur data).
 final favoriteRepositoryProvider = Provider<FavoriteRepository>((ref) {
   throw UnimplementedError(

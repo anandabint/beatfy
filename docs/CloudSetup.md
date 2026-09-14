@@ -1,6 +1,6 @@
-# Setup Google Cloud Console — Cloud Backup (Wajib Dilakukan Manual oleh Pann)
+# Setup Google Cloud Console  Cloud Backup (Wajib Dilakukan Manual oleh Pann)
 
-Ini bagian yang tidak bisa saya/Claude Code kerjakan — perlu login akun Google situ sendiri. Ikuti urut, kirim hasilnya ke saya/Claude Code setelah selesai.
+Ini bagian yang tidak bisa saya/Claude Code kerjakan  perlu login akun Google situ sendiri. Ikuti urut, kirim hasilnya ke saya/Claude Code setelah selesai.
 
 ## 1. Buat project + enable Drive API
 
@@ -12,9 +12,9 @@ Ini bagian yang tidak bisa saya/Claude Code kerjakan — perlu login akun Google
 
 1. **APIs & Services → OAuth consent screen**.
 2. User Type: **External**.
-3. App name: "Beatfy". Support email + developer contact email: `arifandixx@gmail.com`.
-4. Scopes: tambahkan `https://www.googleapis.com/auth/drive.file` (bukan full Drive access — cuma file yang dibuat app sendiri, sesuai Architecture.md § 7).
-5. **Penting**: setelah selesai isi form, klik **Publish App** (pindah dari status "Testing" ke "Production"). Kalau dibiarkan di "Testing", refresh token expired tiap 7 hari — artinya harus login ulang tiap minggu, ganggu buat auto-backup harian. `drive.file` termasuk scope "sensitive" bukan "restricted", jadi publish tidak butuh proses verifikasi Google yang lama — cuma nanti pas login pertama situ bakal lihat warning "Google hasn't verified this app", klik **Advanced → Go to Beatfy (unsafe)** buat lanjut. Aman, itu app situ sendiri.
+3. App name: "Beatfy". Support email + developer contact email: `anandabramadhan@gmail.com`.
+4. Scopes: tambahkan `https://www.googleapis.com/auth/drive.file` (bukan full Drive access  cuma file yang dibuat app sendiri, sesuai Architecture.md § 7).
+5. **Penting**: setelah selesai isi form, klik **Publish App** (pindah dari status "Testing" ke "Production"). Kalau dibiarkan di "Testing", refresh token expired tiap 7 hari  artinya harus login ulang tiap minggu, ganggu buat auto-backup harian. `drive.file` termasuk scope "sensitive" bukan "restricted", jadi publish tidak butuh proses verifikasi Google yang lama  cuma nanti pas login pertama situ bakal lihat warning "Google hasn't verified this app", klik **Advanced → Go to Beatfy (unsafe)** buat lanjut. Aman, itu app situ sendiri.
 
 ## 3. Buat 2 OAuth Client ID (bukan cuma 1)
 
@@ -23,7 +23,7 @@ Ini bagian yang tidak bisa saya/Claude Code kerjakan — perlu login akun Google
 **a. Tipe "Web application"** (ini yang dipakai di kode, buat `serverClientId`):
 - Nama bebas, misal "Beatfy Web Client".
 - Authorized redirect URI boleh kosong/skip kalau tidak diminta wajib.
-- Setelah dibuat, **copy Client ID-nya** (bentuknya `xxxxx.apps.googleusercontent.com`) — ini yang saya/Claude Code perlu buat isi `TODO(Pann)` di `auth_service.dart`.
+- Setelah dibuat, **copy Client ID-nya** (bentuknya `xxxxx.apps.googleusercontent.com`)  ini yang saya/Claude Code perlu buat isi `TODO(Pann)` di `auth_service.dart`.
 
 **b. Tipe "Android"** (ini bukan buat di-input ke kode, tapi wajib ada supaya Google verifikasi signature app):
 - Package name: `com.anandabint.beatfy`
@@ -35,6 +35,6 @@ Ini bagian yang tidak bisa saya/Claude Code kerjakan — perlu login akun Google
 
 ## 4. Kirim ke saya
 
-Setelah selesai, kirim **Client ID dari Web application (poin 3a)** — itu satu-satunya value yang perlu masuk ke kode. Client ID Android tidak perlu dikirim, dia cuma perlu ada dan cocok di Google Cloud Console.
+Setelah selesai, kirim **Client ID dari Web application (poin 3a)**  itu satu-satunya value yang perlu masuk ke kode. Client ID Android tidak perlu dikirim, dia cuma perlu ada dan cocok di Google Cloud Console.
 
-Kalau nanti ganti ke release keystore (bukan debug) buat rilis beneran, harus tambah Client ID Android baru lagi dengan SHA-1 dari release keystore — dicatat sebagai reminder buat nanti, belum relevan sekarang.
+Kalau nanti ganti ke release keystore (bukan debug) buat rilis beneran, harus tambah Client ID Android baru lagi dengan SHA-1 dari release keystore  dicatat sebagai reminder buat nanti, belum relevan sekarang.

@@ -11,7 +11,7 @@ import '../services/cloud_backup_service.dart';
 import 'auth_providers.dart';
 import 'library_providers.dart';
 
-/// Status backup per lagu — dipakai ikon kecil di song row (Architecture.md
+/// Status backup per lagu  dipakai ikon kecil di song row (Architecture.md
 /// § 7b). Null berarti belum pernah ada percobaan backup sama sekali.
 final backupStatusProvider = Provider.family<BackupStatus?, int>((
   ref,
@@ -32,16 +32,16 @@ final cloudBackupServiceProvider = Provider<CloudBackupService>((ref) {
   );
 });
 
-/// Backup manual — tombol "Backup Sekarang" di Settings screen (Design.md
+/// Backup manual  tombol "Backup Sekarang" di Settings screen (Design.md
 /// § 7). Revisi 2026-08-07: trigger otomatis lewat listener konektivitas
 /// (`ConnectivityBackupNotifier`, coba cek WiFi di cold start) sempat
 /// dicoba lagi supaya auto-backup benar-benar jalan tanpa perlu toggle
-/// WiFi manual — tapi QC di device nyata Pann (2 akun Google) membuktikan
+/// WiFi manual  tapi QC di device nyata Pann (2 akun Google) membuktikan
 /// popup "Choose an account" muncul di **setiap** cold start selagi WiFi
 /// nyala, bukan cuma sesekali/gara-gara race (satu panggilan tunggal pun
 /// tetap memicunya). Ini UI asli Android (Credential Manager), bukan bisa
 /// disembunyikan dari kode app. Diputuskan bareng Pann: ganti ke tombol
-/// eksplisit — popup akun (kalau device-nya memang perlu) jadi terasa
+/// eksplisit  popup akun (kalau device-nya memang perlu) jadi terasa
 /// wajar sebagai kelanjutan tap user, bukan interupsi random pas buka
 /// Home. `AuthService.getDriveAuthClient`'s mutex tetap dipertahankan
 /// (masih berguna kalau `RestoreGateNotifier` kebetulan jalan bersamaan).
@@ -93,9 +93,9 @@ final manualBackupProvider =
       ManualBackupNotifier.new,
     );
 
-/// Toggle backup ke Google Drive — Settings screen (Design.md § 7). Sejak
+/// Toggle backup ke Google Drive  Settings screen (Design.md § 7). Sejak
 /// pindah ke tombol manual (2026-08-07), ini jadi master on/off untuk
-/// fitur backup-nya (bukan lagi soal "otomatis") — kalau `false`, tombol
+/// fitur backup-nya (bukan lagi soal "otomatis")  kalau `false`, tombol
 /// "Backup Sekarang" disembunyikan/dinonaktifkan.
 class AutoBackupToggleNotifier extends Notifier<bool> {
   @override
@@ -116,7 +116,7 @@ final autoBackupEnabledProvider =
       AutoBackupToggleNotifier.new,
     );
 
-/// "X dari Y lagu ter-backup" — Settings screen (Design.md § 7).
+/// "X dari Y lagu ter-backup"  Settings screen (Design.md § 7).
 final backupSummaryProvider = Provider<({int done, int total})>((ref) {
   final repository = ref.watch(cloudBackupRepositoryProvider);
   final songsAsync = ref.watch(librarySongsProvider);
@@ -134,7 +134,7 @@ class RestoreGateState {
 /// Dicek sekali di app start (PRD.md § 7 poin 5): `songs` box kosong + user
 /// sign-in + folder "Beatfy Backup" ada isinya → `RestoreScreen`. Kalau
 /// user sign-in tapi belum pernah backup (folder tidak ada/kosong), skip
-/// langsung ke app normal — bukan alasan buat gagal cold-start.
+/// langsung ke app normal  bukan alasan buat gagal cold-start.
 class RestoreGateNotifier extends AsyncNotifier<RestoreGateState> {
   @override
   Future<RestoreGateState> build() async {

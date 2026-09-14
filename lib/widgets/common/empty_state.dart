@@ -4,7 +4,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_theme.dart';
 
-/// Empty state pattern — Design.md § 12: icon 64px `ash` + pesan tengah,
+/// Empty state pattern  Design.md § 12: icon 64px `ash` + pesan tengah,
 /// dipakai di semua list yang bisa kosong (library belum discan, playlist
 /// kosong, hasil search nihil, favorite kosong).
 class EmptyState extends StatelessWidget {

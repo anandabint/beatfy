@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#141414</color>
+
+    <!-- Home widget (docs/prompt_home_widget.md Langkah 2) - sama persis
+         token AppColors dipakai widget tree Flutter (lib/core/theme/app_colors.dart),
+         bukan warna baru. Widget native tidak bisa import AppColors langsung
+         (proses launcher, bukan proses Flutter), jadi nilainya disalin manual
+         di sini - kalau AppColors berubah, sinkronkan juga ke sini. -->
+    <color name="widget_canvas">#141414</color>
+    <color name="widget_primary">#C8F135</color>
+    <color name="widget_ink">#F0F0F0</color>
+    <color name="widget_ash">#B3B3B3</color>
 </resources>

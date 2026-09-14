@@ -13,7 +13,7 @@ import '../../providers/song_delete_providers.dart';
 import 'add_to_playlist_sheet.dart';
 import 'song_artwork.dart';
 
-/// Context menu song lewat long-press — Design.md § 7 "Context menu song"
+/// Context menu song lewat long-press  Design.md § 7 "Context menu song"
 /// (baru 2026-08-07). Pengganti utama swipe-to-delete untuk song row:
 /// aksi hapus sekarang destructive (real file, PRD.md § 7.7) jadi butuh
 /// tempat yang lebih eksplisit daripada gesture swipe yang gampang tidak
@@ -37,7 +37,7 @@ class _SongActionsSheet extends ConsumerWidget {
     Navigator.of(context).pop();
     await SharePlus.instance.share(
       ShareParams(
-        text: '${song.title} — ${song.artist}',
+        text: '${song.title}  ${song.artist}',
         files: [XFile(song.filePath)],
       ),
     );

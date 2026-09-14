@@ -11,7 +11,7 @@ import '../../../models/song.dart';
 import '../../../models/user_profile.dart';
 import 'playback_state_cache.dart';
 
-/// Box names — Schema.md § 2, § 3.
+/// Box names  Schema.md § 2, § 3.
 abstract final class HiveBoxes {
   static const songs = 'songs';
   static const playbackState = 'playback_state';
@@ -28,7 +28,7 @@ abstract final class HiveBoxes {
 const playbackStateCacheKey = 'current';
 
 /// Opens Hive and all v1+v2 boxes. Must run before `runApp` and before
-/// `AudioService.init` — the AudioHandler restores from these boxes at
+/// `AudioService.init`  the AudioHandler restores from these boxes at
 /// construction time (Architecture.md § 4).
 abstract final class HiveSetup {
   static Future<void> init() async {

@@ -6,7 +6,7 @@ import '../../core/theme/app_text_theme.dart';
 import '../../models/library_group.dart';
 import 'song_artwork.dart';
 
-/// Baris grup Album/Artist/Folder di Library tab (Design.md § 7) — art
+/// Baris grup Album/Artist/Folder di Library tab (Design.md § 7)  art
 /// representatif (lagu pertama di grup) + nama grup + "X Lagu".
 class LibraryGroupRow extends StatelessWidget {
   const LibraryGroupRow({super.key, required this.group, required this.onTap});
@@ -27,6 +27,7 @@ class LibraryGroupRow extends StatelessWidget {
         child: Row(
           children: [
             SongArtwork(
+              audioId: representative?.id,
               albumArtId: representative?.albumArtId,
               gradientSeed: group.title,
             ),

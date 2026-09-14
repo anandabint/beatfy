@@ -7,6 +7,7 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_theme.dart';
 import '../../models/playlist.dart';
+import '../../providers/layout_providers.dart';
 import '../../providers/library_providers.dart';
 import '../../providers/playlist_providers.dart';
 import '../../widgets/common/empty_state.dart';
@@ -20,6 +21,12 @@ class PlaylistListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playlists = ref.watch(playlistsProvider);
+    // Body extend di balik dock buat frosted glass (MainShell.extendBody:
+    // true, Architecture.md § 3a) — padding bawah dipakai dari tinggi dock
+    // hasil pengukuran layout nyata (`dockHeightProvider`, bukan konstanta
+    // ditebak) supaya baris terakhir grid tetap bisa discroll sepenuhnya di
+    // atas MiniPlayer+NavBar, bukan permanen ketutup (§ 7e).
+    final dockClearance = ref.watch(dockHeightProvider);
 
     return Scaffold(
       backgroundColor: AppColors.canvas,
@@ -48,11 +55,11 @@ class PlaylistListScreen extends ConsumerWidget {
                         'Belum ada playlist. Tap "New Playlist" di atas untuk buat baru.',
                   )
                 : GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(
+                    padding: EdgeInsets.fromLTRB(
                       AppSpacing.lg,
                       AppSpacing.lg,
                       AppSpacing.lg,
-                      AppSpacing.lg,
+                      dockClearance + AppSpacing.lg,
                     ),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(

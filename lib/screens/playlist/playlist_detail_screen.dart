@@ -13,7 +13,7 @@ import '../../widgets/common/song_actions_sheet.dart';
 import '../../widgets/common/song_row.dart';
 import 'add_songs_to_playlist_screen.dart';
 
-/// Detail playlist — list lagu, reorder (drag handle), hapus (swipe),
+/// Detail playlist  list lagu, reorder (drag handle), hapus (swipe),
 /// tambah lagu (PRD.md § 7 poin 1).
 class PlaylistDetailScreen extends ConsumerWidget {
   const PlaylistDetailScreen({super.key, required this.playlistId});
@@ -99,12 +99,12 @@ class PlaylistDetailScreen extends ConsumerWidget {
                     onLongPress: () => showSongActionsSheet(context, song),
                     trailing: Listener(
                       // Haptic di-fire saat handle mulai disentuh (proxy untuk
-                      // "grab start" — `ReorderableDragStartListener` sendiri
+                      // "grab start"  `ReorderableDragStartListener` sendiri
                       // tidak expose callback awal drag).
                       onPointerDown: (_) => HapticFeedback.lightImpact(),
                       child: ReorderableDragStartListener(
                         index: index,
-                        // Icon telanjang cuma ~24px — perbesar area sentuh ke
+                        // Icon telanjang cuma ~24px  perbesar area sentuh ke
                         // minimum 44x44 (Design.md § 9) sekalian mempermudah
                         // gesture drag-nya kena.
                         child: const SizedBox(
@@ -124,7 +124,7 @@ class PlaylistDetailScreen extends ConsumerWidget {
     );
   }
 
-  /// Konfirmasi sebelum lagu benar-benar hilang dari playlist — swipe saja
+  /// Konfirmasi sebelum lagu benar-benar hilang dari playlist  swipe saja
   /// tidak boleh langsung menghapus data (Design.md § 12).
   Future<bool?> _confirmRemoveSong(BuildContext context, Song song) {
     return showDialog<bool>(

@@ -2,7 +2,7 @@ import 'package:hive_ce/hive_ce.dart';
 
 part 'cloud_backup_record.g.dart';
 
-/// Status backup satu lagu ke Google Drive — Schema.md § 3.
+/// Status backup satu lagu ke Google Drive  Schema.md § 3.
 @HiveType(typeId: 5)
 class CloudBackupRecord extends HiveObject {
   CloudBackupRecord({

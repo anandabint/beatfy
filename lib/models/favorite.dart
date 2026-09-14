@@ -2,7 +2,7 @@ import 'package:hive_ce/hive_ce.dart';
 
 part 'favorite.g.dart';
 
-/// Penanda lagu favorit — Schema.md § 3. Box key = [songId].
+/// Penanda lagu favorit  Schema.md § 3. Box key = [songId].
 @HiveType(typeId: 3)
 class Favorite extends HiveObject {
   Favorite({required this.songId, required this.addedAt});

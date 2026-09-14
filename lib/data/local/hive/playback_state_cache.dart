@@ -2,7 +2,7 @@ import 'package:hive_ce/hive_ce.dart';
 
 part 'playback_state_cache.g.dart';
 
-/// Single-entry cache (key `'current'`) — kunci fix bug pause-resume.
+/// Single-entry cache (key `'current'`)  kunci fix bug pause-resume.
 /// Ditulis setiap event penting (Architecture.md § 4), bukan hanya saat app pause.
 /// Schema.md § 2.
 @HiveType(typeId: 1)
@@ -37,7 +37,7 @@ class PlaybackStateCache extends HiveObject {
   @HiveField(5)
   final RepeatMode repeatMode;
 
-  /// Status terakhir — dipakai untuk keputusan auto-resume atau tidak saat app dibuka.
+  /// Status terakhir  dipakai untuk keputusan auto-resume atau tidak saat app dibuka.
   @HiveField(6)
   final bool isPlaying;
 

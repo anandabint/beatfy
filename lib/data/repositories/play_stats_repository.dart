@@ -3,7 +3,7 @@ import 'package:hive_ce/hive_ce.dart';
 import '../../models/play_stats.dart';
 import '../local/hive/hive_setup.dart';
 
-/// Statistik play count — Schema.md § 3. Dipakai Home tab (Top 10) dan
+/// Statistik play count  Schema.md § 3. Dipakai Home tab (Top 10) dan
 /// di-increment dari `AudioHandler` saat lagu lewat >50% durasi.
 class PlayStatsRepository {
   PlayStatsRepository({Box<PlayStats>? box})
@@ -12,7 +12,7 @@ class PlayStatsRepository {
   final Box<PlayStats> _box;
 
   /// `recordPlay` dipanggil dari `AudioHandler`, di luar alur mutasi provider
-  /// biasa — expose stream perubahan supaya provider Home tab (Top 10) bisa
+  /// biasa  expose stream perubahan supaya provider Home tab (Top 10) bisa
   /// tetap reaktif tanpa UI/provider menyentuh Hive langsung.
   Stream<void> watchChanges() => _box.watch().map((_) {});
 

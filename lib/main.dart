@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
+import 'core/theme/app_colors.dart';
 import 'data/local/hive/hive_setup.dart';
 import 'data/repositories/app_preferences_repository.dart';
 import 'data/repositories/cloud_backup_repository.dart';
@@ -22,6 +25,7 @@ import 'providers/library_providers.dart';
 import 'providers/onboarding_providers.dart';
 import 'providers/playback_providers.dart';
 import 'providers/playlist_providers.dart';
+import 'services/home_widget_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +64,7 @@ Future<void> main() async {
     builder: () => BeatfyAudioHandler(
       libraryRepository: libraryRepository,
       playStatsRepository: playStatsRepository,
+      appPreferencesRepository: appPreferencesRepository,
     ),
     config: const AudioServiceConfig(
       androidNotificationChannelId: 'com.anandabint.beatfy.channel.audio',
@@ -75,12 +80,24 @@ Future<void> main() async {
       // `notificationClickedProvider` di app.dart untuk push Now Playing
       // (Architecture.md § 4a).
       androidNotificationClickStartsActivity: true,
+      // Accent color notification/media session (dipakai juga oleh Android
+      // Auto untuk aksen di kartu now-playing, docs/prompt_android_auto.md
+      // Langkah 3) — satu-satunya titik gaya yang bisa disentuh dari sisi
+      // app, sisanya template sistem.
+      notificationColor: AppColors.primary,
     ),
   );
 
   // WAJIB selesai sebelum runApp() — restore queue+posisi sebelum UI pertama
   // kali render (Architecture.md § 4, fix bug utama PRD.md § 1).
   await audioHandler.restoreFromCache();
+
+  // Home screen widget (docs/prompt_home_widget.md) — dijalankan setelah
+  // restoreFromCache supaya push pertamanya sudah mencerminkan lagu yang
+  // di-restore, bukan state kosong yang langsung menyusul dengan update
+  // kedua. Tidak pernah di-dispose — hidup selama proses Flutter hidup,
+  // sama seperti provider lain yang subscribe ke `audioHandler`.
+  unawaited(HomeWidgetService(audioHandler).start());
 
   runApp(
     ProviderScope(

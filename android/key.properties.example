@@ -1,5 +1,5 @@
 ## Copy this file to `android/key.properties` (same folder) and fill in your
-## own values after generating a release keystore — see README.md "Release
+## own values after generating a release keystore  see README.md "Release
 ## build" section. `key.properties` itself is git-ignored and must NEVER be
 ## committed.
 storePassword=CHANGE_ME

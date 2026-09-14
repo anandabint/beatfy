@@ -6,7 +6,7 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_theme.dart';
 
-/// Horizontal scroll filter pill row — Design.md § 7: active pill filled
+/// Horizontal scroll filter pill row  Design.md § 7: active pill filled
 /// lime, dipakai di Home dan Library (label beda per konteks).
 class FilterPillRow<T> extends StatelessWidget {
   const FilterPillRow({

@@ -7,6 +7,7 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_theme.dart';
 import '../../providers/favorite_providers.dart';
+import '../../providers/layout_providers.dart';
 import '../../providers/library_providers.dart';
 import '../../providers/playback_providers.dart';
 import '../../widgets/common/empty_state.dart';
@@ -64,6 +65,12 @@ class _SongList extends ConsumerWidget {
     final currentSongId = ref.watch(currentMediaItemProvider).value?.id;
     final favoriteIds = ref.watch(favoriteIdsProvider);
     final filter = ref.watch(libraryFilterProvider);
+    // Body extend di balik dock buat frosted glass (MainShell.extendBody:
+    // true, Architecture.md § 3a) — padding bawah dipakai dari tinggi dock
+    // hasil pengukuran layout nyata (`dockHeightProvider`, bukan konstanta
+    // ditebak) supaya lagu terakhir tetap bisa discroll sepenuhnya di atas
+    // MiniPlayer+NavBar, bukan permanen ketutup (§ 7e).
+    final dockClearance = ref.watch(dockHeightProvider);
 
     return Column(
       children: [
@@ -105,7 +112,9 @@ class _SongList extends ConsumerWidget {
                       onRefresh: () =>
                           ref.read(librarySongsProvider.notifier).rescan(),
                       child: ListView.builder(
-                        padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+                        padding: EdgeInsets.only(
+                          bottom: dockClearance + AppSpacing.lg,
+                        ),
                         // Semua row seragam tinggi — skip layout pass per-item
                         // saat scroll (audit performa PRD.md § 11, 2026-08-07).
                         prototypeItem: SongRow(song: songs.first, onTap: () {}),
@@ -160,6 +169,7 @@ class _GroupList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final groupsAsync = ref.watch(libraryGroupsProvider);
+    final dockClearance = ref.watch(dockHeightProvider);
 
     return groupsAsync.when(
       loading: () => const _ScanningSkeleton(),
@@ -177,7 +187,7 @@ class _GroupList extends ConsumerWidget {
           );
         }
         return ListView.builder(
-          padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+          padding: EdgeInsets.only(bottom: dockClearance + AppSpacing.lg),
           // Semua row seragam tinggi — skip layout pass per-item saat scroll
           // (audit performa PRD.md § 11, 2026-08-07).
           prototypeItem: LibraryGroupRow(group: groups.first, onTap: () {}),

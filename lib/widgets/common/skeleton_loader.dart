@@ -4,7 +4,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 
-/// Shimmer skeleton primitive — Design.md § 12 ("Skeleton loading, bukan
+/// Shimmer skeleton primitive  Design.md § 12 ("Skeleton loading, bukan
 /// spinner generik"). Base/highlight pakai `AppColors.surfaceMuted`/
 /// `surfaceHover`, gradient band bergerak lewat [GradientTransform] (pola
 /// sama seperti package `shimmer`, di-port manual biar tidak nambah
@@ -22,7 +22,7 @@ class SkeletonBox extends StatefulWidget {
   final double? height;
   final double radius;
 
-  /// Art/avatar sekarang circular-first (Design.md § 5) — pakai ini alih-alih
+  /// Art/avatar sekarang circular-first (Design.md § 5)  pakai ini alih-alih
   /// [radius] untuk skeleton yang merepresentasikan artwork/cover/avatar.
   final bool circle;
 
@@ -92,7 +92,7 @@ class _SlidingGradientTransform extends GradientTransform {
   }
 }
 
-/// Skeleton bentuk [SongRow] — dipakai saat library scan / search / list
+/// Skeleton bentuk [SongRow]  dipakai saat library scan / search / list
 /// lagu lain sedang loading.
 class SkeletonSongRow extends StatelessWidget {
   const SkeletonSongRow({super.key});
@@ -127,7 +127,7 @@ class SkeletonSongRow extends StatelessWidget {
   }
 }
 
-/// Skeleton bentuk `_PlaylistCard` (grid) — dipakai saat Playlist tab loading.
+/// Skeleton bentuk `_PlaylistCard` (grid)  dipakai saat Playlist tab loading.
 class SkeletonPlaylistCard extends StatelessWidget {
   const SkeletonPlaylistCard({super.key});
 

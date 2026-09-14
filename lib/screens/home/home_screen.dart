@@ -9,6 +9,7 @@ import '../../core/theme/app_text_theme.dart';
 import '../../models/song.dart';
 import '../../providers/auth_providers.dart';
 import '../../providers/home_providers.dart';
+import '../../providers/layout_providers.dart';
 import '../../providers/library_providers.dart';
 import '../../providers/playback_providers.dart';
 import '../../widgets/common/filter_pill_row.dart';
@@ -38,6 +39,12 @@ class HomeScreen extends ConsumerWidget {
     final recentlyAdded = ref.watch(recentlyAddedProvider);
     final topPlayed = ref.watch(topPlayedProvider);
     final filter = ref.watch(_homeFilterProvider);
+    // Body extend di balik dock buat frosted glass (MainShell.extendBody:
+    // true, Architecture.md § 3a) — padding bawah dipakai dari tinggi dock
+    // hasil pengukuran layout nyata (`dockHeightProvider`, bukan konstanta
+    // ditebak) supaya section terakhir (Top 10) tetap bisa discroll
+    // sepenuhnya di atas MiniPlayer+NavBar, bukan permanen ketutup (§ 7e).
+    final dockClearance = ref.watch(dockHeightProvider);
     final showRecent =
         filter == _HomeFilter.all || filter == _HomeFilter.newRelease;
     final showTop =
@@ -57,7 +64,7 @@ class HomeScreen extends ConsumerWidget {
           SafeArea(
             bottom: false,
             child: ListView(
-              padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+              padding: EdgeInsets.only(bottom: dockClearance + AppSpacing.lg),
               children: [
                 const _HomeHeader(),
                 const SizedBox(height: AppSpacing.lg),

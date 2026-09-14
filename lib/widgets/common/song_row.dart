@@ -22,12 +22,12 @@ class SongRow extends ConsumerWidget {
   final Song song;
   final VoidCallback onTap;
 
-  /// Buka context menu (Design.md § 7 "Context menu song") — null berarti
+  /// Buka context menu (Design.md § 7 "Context menu song")  null berarti
   /// pemanggil sengaja tidak menyediakan menu di konteks itu.
   final VoidCallback? onLongPress;
   final bool active;
 
-  /// Slot opsional setelah durasi — dipakai mis. star favorite (Library tab)
+  /// Slot opsional setelah durasi  dipakai mis. star favorite (Library tab)
   /// atau drag handle (Playlist detail).
   final Widget? trailing;
 
@@ -73,7 +73,7 @@ class SongRow extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: AppSpacing.sm),
-            // Ikon status backup — Architecture.md § 7b, subtle, bukan
+            // Ikon status backup  Architecture.md § 7b, subtle, bukan
             // indikator "streaming vs lokal" (app ini tidak streaming).
             Icon(
               backupStatus == BackupStatus.done
