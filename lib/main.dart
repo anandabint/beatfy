@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'core/theme/app_colors.dart';
+import 'core/utils/refresh_rate_manager.dart';
 import 'data/local/hive/hive_setup.dart';
 import 'data/repositories/app_preferences_repository.dart';
 import 'data/repositories/cloud_backup_repository.dart';
@@ -30,22 +30,11 @@ import 'services/home_widget_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Performance gate (PRD.md § 11); Android caps render di 60Hz meski
-  // device support lebih tinggi kecuali diminta eksplisit. Android-only API;
-  // gagal diam-diam di platform lain (mis. flutter run -d chrome saat dev).
-  // `setHighRefreshRate()` sudah benar secara logika (cari mode dengan
-  // resolusi sama tapi refresh rate tertinggi, lihat source package) — versi
-  // sebelumnya cuma menelan error diam-diam sehingga kegagalan di device
-  // tertentu tidak pernah terlihat. Sekarang error dan hasil aktualnya
-  // di-log eksplisit supaya ketahuan kalau ternyata masih gagal.
-  try {
-    await FlutterDisplayMode.setHighRefreshRate();
-    final active = await FlutterDisplayMode.active;
-    debugPrint('Display mode set: ${active.refreshRate}Hz');
-  } on Object catch (error) {
-    debugPrint('Failed to set high refresh rate: $error');
-    // no-op; refresh rate tetap default kalau device/platform tidak support.
-  }
+  // Performance gate (PRD.md § 11); re-apply tiap resume, bukan cuma cold
+  // start (lihat RefreshRateManager untuk alasannya). Instance tidak pernah
+  // di-dispose; hidup selama proses Flutter hidup, sama seperti
+  // HomeWidgetService di bawah.
+  RefreshRateManager().start();
 
   // Architecture.md § 7c (KRITIS); harus eksplisit dan selesai sebelum
   // player manapun mulai. Tanpa ini, just_audio hanya menerapkan config
