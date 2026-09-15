@@ -33,20 +33,17 @@ Future<void> main() async {
   // Performance gate (PRD.md § 11); Android caps render di 60Hz meski
   // device support lebih tinggi kecuali diminta eksplisit. Android-only API;
   // gagal diam-diam di platform lain (mis. flutter run -d chrome saat dev).
-  // FIX v1.0.2: gunakan setPreferredDisplayMode dengan mode tertinggi
-  // daripada setHighRefreshRate yang tidak reliable di semua device.
+  // `setHighRefreshRate()` sudah benar secara logika (cari mode dengan
+  // resolusi sama tapi refresh rate tertinggi, lihat source package) — versi
+  // sebelumnya cuma menelan error diam-diam sehingga kegagalan di device
+  // tertentu tidak pernah terlihat. Sekarang error dan hasil aktualnya
+  // di-log eksplisit supaya ketahuan kalau ternyata masih gagal.
   try {
-    final modes = await FlutterDisplayMode.getAvailableDisplayModes();
-    if (modes.isNotEmpty) {
-      // Ambil mode dengan refresh rate TERTINGGI yang device support
-      final preferredMode = modes.reduce((a, b) =>
-          a.refreshRate > b.refreshRate ? a : b
-      );
-      await FlutterDisplayMode.setPreferredDisplayMode(preferredMode);
-      debugPrint('Display mode set: ${preferredMode.refreshRate}Hz');
-    }
+    await FlutterDisplayMode.setHighRefreshRate();
+    final active = await FlutterDisplayMode.active;
+    debugPrint('Display mode set: ${active.refreshRate}Hz');
   } on Object catch (error) {
-    debugPrint('Failed to set display mode: $error');
+    debugPrint('Failed to set high refresh rate: $error');
     // no-op; refresh rate tetap default kalau device/platform tidak support.
   }
 
